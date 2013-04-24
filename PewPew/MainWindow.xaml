@@ -20,11 +20,11 @@
         <DockPanel Grid.Row="2" Margin="0">
             <Label Name="lblConnectionStatus" HorizontalAlignment="Center" Content="Not listening"/>
         </DockPanel>
-        <DockPanel Grid.Row="3">
-            <Image Name="imgPicture" />
-        </DockPanel>
         <Viewbox Grid.Row="3" Stretch="Uniform" HorizontalAlignment="Center">
-            <Image Name="Image" Width="640" Height="480"/>
+            <Image Name="ColorImage" Width="640" Height="480"/>
+        </Viewbox>
+        <Viewbox Grid.Row="3" Stretch="Uniform" HorizontalAlignment="Center">
+            <Image Name="SkeletonImage" Width="640" Height="480"/>
         </Viewbox>
     </Grid>
 </Window>

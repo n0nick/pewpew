@@ -29,7 +29,7 @@ namespace PewPew
 
         // skeleton
         private DrawingGroup drawingGroup;
-        private DrawingImage imageSource;
+        private DrawingImage skeletonImgSource;
         private const float RenderWidth = 640.0f;
         private const float RenderHeight = 480.0f;
         private const double JointThickness = 3;
@@ -40,6 +40,11 @@ namespace PewPew
         private readonly Brush inferredJointBrush = Brushes.Yellow;
         private readonly Pen trackedBonePen = new Pen(Brushes.Green, 6);
         private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
+
+        //color
+        private WriteableBitmap colorImgSource;
+        private byte[] colorPixels;
+        private ColorImageFormat colorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
 
         public MainWindow()
         {
@@ -75,14 +80,6 @@ namespace PewPew
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Create the drawing group we'll use for drawing
-            this.drawingGroup = new DrawingGroup();
-
-            // Create an image source that we can use in our image control
-            this.imageSource = new DrawingImage(this.drawingGroup);
-
-            // Display the drawing using our image control
-            Image.Source = this.imageSource;
 
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
@@ -95,8 +92,17 @@ namespace PewPew
             
             if (null != this.sensor)
             {
+                this.sensor.ColorStream.Enable(this.colorImageFormat);
+                this.colorPixels = new byte[this.sensor.ColorStream.FramePixelDataLength];
+                this.colorImgSource = new WriteableBitmap(this.sensor.ColorStream.FrameWidth, this.sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
+                this.ColorImage.Source = this.colorImgSource;
+                this.sensor.ColorFrameReady += this.SensorColorFrameReady;
+
                 this.sensor.SkeletonStream.Enable();
                 this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
+                this.drawingGroup = new DrawingGroup();
+                this.skeletonImgSource = new DrawingImage(this.drawingGroup);
+                this.SkeletonImage.Source = this.skeletonImgSource;
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
 
                 try
@@ -134,7 +140,7 @@ namespace PewPew
             using (DrawingContext dc = this.drawingGroup.Open())
             {
                 // Draw a transparent background to set the render size
-                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+                /* dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight)); */
 
                 if (skeletons.Length != 0)
                 {
@@ -160,6 +166,26 @@ namespace PewPew
 
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+            }
+        }
+
+
+        private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        {
+            using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
+            {
+                if (colorFrame != null)
+                {
+                    // Copy the pixel data from the image to a temporary array
+                    colorFrame.CopyPixelDataTo(this.colorPixels);
+
+                    // Write the pixel data into our bitmap
+                    this.colorImgSource.WritePixels(
+                        new Int32Rect(0, 0, this.colorImgSource.PixelWidth, this.colorImgSource.PixelHeight),
+                        this.colorPixels,
+                        this.colorImgSource.PixelWidth * sizeof(int),
+                        0);
+                }
             }
         }
 
