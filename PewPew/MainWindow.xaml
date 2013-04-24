@@ -3,6 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Button Name="btnStart" Click="btnStart_Click" Content="Start" Height="73" VerticalAlignment="Top" HorizontalAlignment="Right" Width="243" Margin="0,0,274,0"/>
+        <Button Name="btnStop" Click="btnStop_Click" Content="Stop" Margin="263,0,0,248" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.28"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Label Name="lblConnectionStatus" Margin="0,245,83,0" Content="Awaiting your command" />
     </Grid>
 </Window>
