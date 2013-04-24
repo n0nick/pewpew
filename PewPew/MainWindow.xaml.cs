@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PewPew.Server;
+using PewPew.Game;
 using Bend.Util;
 using Microsoft.Kinect;
 using System.Threading;
@@ -26,6 +26,8 @@ namespace PewPew
         private Thread _listenThread;
 
         private KinectSensor sensor;
+
+        private Player player;
 
         // skeleton
         private DrawingGroup drawingGroup;
@@ -80,6 +82,7 @@ namespace PewPew
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.player = new Player();
 
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
@@ -139,9 +142,6 @@ namespace PewPew
 
             using (DrawingContext dc = this.drawingGroup.Open())
             {
-                // Draw a transparent background to set the render size
-                /* dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight)); */
-
                 if (skeletons.Length != 0)
                 {
                     foreach (Skeleton skel in skeletons)
@@ -150,25 +150,17 @@ namespace PewPew
 
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
+                            this.updatePlayerPosition(skel);
+                            this.RenderPlayerHands(dc);
                             this.DrawBonesAndJoints(skel, dc);
-                        }
-                        else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
-                        {
-                            dc.DrawEllipse(
-                            this.centerPointBrush,
-                            null,
-                            this.SkeletonPointToScreen(skel.Position),
-                            BodyCenterThickness,
-                            BodyCenterThickness);
+                            //break; // moualem
                         }
                     }
                 }
 
-                // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
             }
         }
-
 
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
@@ -176,10 +168,8 @@ namespace PewPew
             {
                 if (colorFrame != null)
                 {
-                    // Copy the pixel data from the image to a temporary array
                     colorFrame.CopyPixelDataTo(this.colorPixels);
 
-                    // Write the pixel data into our bitmap
                     this.colorImgSource.WritePixels(
                         new Int32Rect(0, 0, this.colorImgSource.PixelWidth, this.colorImgSource.PixelHeight),
                         this.colorPixels,
@@ -187,6 +177,19 @@ namespace PewPew
                         0);
                 }
             }
+        }
+
+        private void updatePlayerPosition(Skeleton skeleton)
+        {
+            this.player.UpdateHands(skeleton);
+        }
+
+        private void RenderPlayerHands(DrawingContext dc)
+        {
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.leftHand), JointThickness, JointThickness);
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.rightHand), JointThickness, JointThickness);
+
+            dc.DrawEllipse(this.centerPointBrush, null, this.SkeletonPointToScreen(this.player.center), JointThickness, JointThickness);
         }
 
         private void DrawBonesAndJoints(Skeleton skeleton, DrawingContext drawingContext)
@@ -313,93 +316,5 @@ namespace PewPew
             }
         }
 
-#region CRAP
-        //private void InitializeKinectComponents()
-        //{
-        //    foreach (var potentialSensor in KinectSensor.KinectSensors)
-        //    {
-        //        if (potentialSensor.Status == KinectStatus.Connected)
-        //        {
-        //            this._sensor = potentialSensor;
-        //            break;
-        //        }
-        //    }
-
-        //    if (null != this._sensor)
-        //    {
-        //        this._sensor.SkeletonStream.Enable();
-        //        this._sensor.ColorStream.Enable(); // for debug
-
-        //        this._colorPixels = new byte[this._sensor.ColorStream.FramePixelDataLength];
-        //        this._colorCoordinates = new ColorImagePoint[this._sensor.DepthStream.FramePixelDataLength];
-        //        this._colorBitmap = new WriteableBitmap(this._sensor.ColorStream.FrameWidth, this._sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
-        //        this.imgPicture.Source = this._colorBitmap;
-
-        //        this._skeletonData = new Skeleton[this._sensor.SkeletonStream.FrameSkeletonArrayLength];
-
-        //        this._sensor.AllFramesReady += this.SensorAllFramesReady;
-
-        //        // Start the sensor!
-        //        try
-        //        {
-        //            this._sensor.Start();
-        //        }
-        //        catch (IOException)
-        //        {
-        //            this._sensor = null;
-        //        }
-        //    }
-        //}
-
-        //private void SensorAllFramesReady(object sender, AllFramesReadyEventArgs e)
-        //{
-        //    using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
-        //    {
-        //        if (colorFrame != null)
-        //        {
-        //            // Copy the pixel data from the image to a temporary array
-        //            colorFrame.CopyPixelDataTo(this._colorPixels);
-
-        //            // Write the pixel data into our bitmap
-        //            this._colorBitmap.WritePixels(
-        //                new Int32Rect(0, 0, this._colorBitmap.PixelWidth, this._colorBitmap.PixelHeight),
-        //                this._colorPixels,
-        //                this._colorBitmap.PixelWidth * sizeof(int),
-        //                0);
-        //        }
-        //    }
-
-        //    using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
-        //    {
-        //        if (skeletonFrame != null)
-        //        {
-        //            skeletonFrame.CopySkeletonDataTo(_skeletonData);
-
-        //            foreach (var currSkeleton in _skeletonData)
-        //            {
-        //                if(currSkeleton.Joints[JointType.HandLeft].Position.X > 0)
-        //                {
-        //                    var handLeft = currSkeleton.Joints[JointType.HandLeft];
-        //                    var handRight = currSkeleton.Joints[JointType.HandRight];
-
-        //                    var center = new SkeletonPoint();
-        //                    center.X = (handLeft.Position.X + handRight.Position.X) / 2;
-        //                    center.Y = (handLeft.Position.Y + handRight.Position.Y) / 2;
-        //                    center.Z = (handLeft.Position.Z + handRight.Position.Z) / 2;
-
-        //                    center.X += currSkeleton.Position.X;
-        //                    center.Y += currSkeleton.Position.Y;
-        //                    center.Z += currSkeleton.Position.Z;
-
-        //                    if (center.X > 0)
-        //                    {
-        //                        int k = 1;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-#endregion
     }
 }

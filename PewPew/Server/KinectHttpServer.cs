@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace PewPew.Server
+namespace PewPew.Game
 {
     public class KinectHttpServer : HttpServer
     {

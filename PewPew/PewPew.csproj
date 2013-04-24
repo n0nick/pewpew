@@ -55,8 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Game\Player.cs" />
     <Compile Include="Server\Communicator.cs" />
-    <Compile Include="Server\GameData.cs" />
+    <Compile Include="Game\GameData.cs" />
     <Compile Include="Server\KinectHttpServer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
