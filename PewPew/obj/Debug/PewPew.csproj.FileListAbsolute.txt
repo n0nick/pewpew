@@ -11,9 +11,7 @@ c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\D
 c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.csproj.GenerateResource.Cache
 c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.exe
 c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.pdb
-C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.exe.config
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.exe
-C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.pdb
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\SimpleHttpServer.exe
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\SimpleHttpServer.pdb
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.csprojResolveAssemblyReference.cache
@@ -26,3 +24,5 @@ C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.Propertie
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.csproj.GenerateResource.Cache
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.exe
 C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.pdb
+C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.exe.config
+C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.pdb

@@ -8,6 +8,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <DockPanel Grid.Row="0" Margin="0" >
@@ -18,6 +19,9 @@
         </DockPanel>
         <DockPanel Grid.Row="2" Margin="0">
             <Label Name="lblConnectionStatus" Content="Awaiting your command" HorizontalAlignment="Center"/>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Margin="0">
+            <Image Name="imgPicture" />
         </DockPanel>
     </Grid>
 </Window>

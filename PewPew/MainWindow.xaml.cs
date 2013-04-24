@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PewPew.Server;
 using Bend.Util;
+using Microsoft.Kinect;
 
 namespace PewPew
 {
@@ -26,8 +27,9 @@ namespace PewPew
         {
             InitializeComponent();
 
-            KinectHttpServer server = new KinectHttpServer(8080);
+            KinectHttpServer server = new KinectHttpServer(KinectHttpServer.SERVER_PORT);
             server.listen();
+            
             
         }
 

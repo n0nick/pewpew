@@ -11,6 +11,8 @@ namespace PewPew.Server
 {
     public class KinectHttpServer : HttpServer
     {
+        public const int SERVER_PORT = 8080;
+
         public KinectHttpServer(int port)
             : base(port)
         {
@@ -21,11 +23,12 @@ namespace PewPew.Server
             Console.WriteLine("request: {0}", p.http_url);
             p.writeSuccess();
 
-            var data = ParseParameters(p.http_url);
+            string callback = String.Empty;
+            var data = ParseParameters(p.http_url, out callback);
 
             try
             {
-                p.outputStream.WriteLine("\"OK\"");
+                p.outputStream.WriteLine(callback + "(\"OK\")");
             }
             catch (Exception ex)
             {
@@ -38,9 +41,10 @@ namespace PewPew.Server
             p.outputStream.WriteLine("POST method not supported!");
         }
 
-        private GameData ParseParameters(string url)
+        private GameData ParseParameters(string url, out string callback)
         {
             GameData data = new GameData();
+            callback = "invalid";
 
             try
             {
@@ -49,6 +53,7 @@ namespace PewPew.Server
 
                 if (parameters != null)
                 {
+                    callback = parameters["callback"];
                     data.Weapon = parameters["w"];
 
                     if(parameters["x"] != null)
@@ -66,8 +71,10 @@ namespace PewPew.Server
                     if (parameters["b"] != null)
                         data.b = float.Parse(parameters["b"]);
 
-                    if (parameters["c"] != null)
+                    if (parameters["g"] != null)
                         data.g = float.Parse(parameters["g"]);
+
+                        
                 }
             }
             catch (Exception ex)
