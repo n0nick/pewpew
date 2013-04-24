@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PewPew.Server;
+using Bend.Util;
 
 namespace PewPew
 {
@@ -21,44 +22,29 @@ namespace PewPew
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Communicator comm = new Communicator();
-
         public MainWindow()
         {
             InitializeComponent();
+
+            KinectHttpServer server = new KinectHttpServer(8080);
+            server.listen();
+            
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            lblConnectionStatus.Content = comm.GetState();
-            StartSocket();
-            lblConnectionStatus.Content = comm.GetState();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            lblConnectionStatus.Content = comm.GetState();
-            StopSocket();
-            lblConnectionStatus.Content = comm.GetState();
         }
 
         private void StartSocket()
         {
-            if ((comm != null) && (comm.GetState() == Communicator.States.Initialized))
-            {
-                lblConnectionStatus.Content = comm.GetState();
-                comm.BeginListening();
-                lblConnectionStatus.Content = comm.GetState();
-                comm.WaitForConnection();
-                lblConnectionStatus.Content = comm.GetState();
-            }
         }
 
         private void StopSocket()
         {
-            lblConnectionStatus.Content = comm.GetState();
-            comm.Close();
-            lblConnectionStatus.Content = comm.GetState();
         }
     }
 }

@@ -107,9 +107,8 @@ namespace PewPew.Server
                     try
                     {
                         _socketClient = e.AcceptSocket;
-                        Debug.Assert(_socketClient != null);
 
-                        Handshake();
+                        SendToClient("Hello, client!".ToArray<char>());
                     }
                     catch
                     {
@@ -132,7 +131,7 @@ namespace PewPew.Server
             _state = States.Initialized;
         }
 
-        private void Handshake()
+        private void SendToClient(char[] msg)
         {
             if (_socketClient.Connected)
             {
@@ -140,17 +139,8 @@ namespace PewPew.Server
                 var networkStream = new NetworkStream(_socketClient);
                 var streamWriter = new StreamWriter(networkStream);
                 var streamReader = new StreamReader(networkStream);
-                
-                var shake = new char[HANDSHAKE_LENGTH];
-                streamReader.Read(shake, 0, HANDSHAKE_LENGTH);
-
-                var handshake = "HTTP/1.1 101 Switching Protocols\r\n" +
-                                "Upgrade: websocket\r\n" +
-                                "Connection: Upgrade\r\n" +
-                                "Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=\r\n" +
-                                "Sec-WebSocket-Protocol: chat";
-                
-                streamWriter.Write(handshake);
+                                
+                streamWriter.Write(msg);
                 streamWriter.Flush();
             }
         }
