@@ -1,0 +1,16 @@
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\bin\Debug\PewPew.exe.config
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\bin\Debug\PewPew.exe
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\bin\Debug\PewPew.pdb
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.csprojResolveAssemblyReference.cache
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\MainWindow.baml
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\MainWindow.g.cs
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\App.g.cs
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew_MarkupCompile.cache
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.g.resources
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.Properties.Resources.resources
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.csproj.GenerateResource.Cache
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.exe
+c:\users\administrator\documents\visual studio 2012\Projects\PewPew\PewPew\obj\Debug\PewPew.pdb
+C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\bin\Debug\PewPew.exe.config
+C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.exe
+C:\Users\Administrator\Documents\GitHub\pewpew\PewPew\obj\Debug\PewPew.pdb
