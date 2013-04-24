@@ -21,7 +21,7 @@ namespace PewPew
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Communicator comm;
+        private Communicator comm = new Communicator();
 
         public MainWindow()
         {
@@ -30,7 +30,6 @@ namespace PewPew
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            comm = new Communicator();
             lblConnectionStatus.Content = comm.GetState();
             StartSocket();
             lblConnectionStatus.Content = comm.GetState();
@@ -45,12 +44,14 @@ namespace PewPew
 
         private void StartSocket()
         {
-            comm = new Communicator();
-            lblConnectionStatus.Content = comm.GetState();
-            comm.BeginListening();
-            lblConnectionStatus.Content = comm.GetState();
-            comm.WaitForConnection();
-            lblConnectionStatus.Content = comm.GetState();
+            if ((comm != null) && (comm.GetState() == Communicator.States.Initialized))
+            {
+                lblConnectionStatus.Content = comm.GetState();
+                comm.BeginListening();
+                lblConnectionStatus.Content = comm.GetState();
+                comm.WaitForConnection();
+                lblConnectionStatus.Content = comm.GetState();
+            }
         }
 
         private void StopSocket()

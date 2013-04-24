@@ -12,6 +12,8 @@ namespace PewPew.Server
 {
     class Communicator
     {
+        #region Members
+
         private const int MAX_CONCURRENT_CONNECTIONS = 1;
         private const int HANDSHAKE_LENGTH = 255;
         private const int SERVER_PORT = 8080;
@@ -42,6 +44,8 @@ namespace PewPew.Server
         };
 
         public States _state = States.Uninitialized;
+
+        #endregion
 
         public Communicator()
         {
@@ -84,9 +88,13 @@ namespace PewPew.Server
             }
         }
 
-        public string GetState()
+        public string GetStateDescription()
         {
             return dicStates[_state];
+        }
+        public States GetState()
+        {
+            return _state;
         }
 
         private void AcceptCallback(object sender, SocketAsyncEventArgs e)
