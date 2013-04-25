@@ -17,6 +17,9 @@ using Bend.Util;
 using Microsoft.Kinect;
 using System.Threading;
 using System.IO;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using PewPew.Game;
 
 namespace PewPew
 {
@@ -51,28 +54,29 @@ namespace PewPew
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowState = System.Windows.WindowState.Maximized;
         }
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
-        {
-            _listenThread = new Thread(new ThreadStart(StartListening));
-            _listenThread.Start();
-            lblConnectionStatus.Content = "Listening";
-        }
+        //private void btnStart_Click(object sender, RoutedEventArgs e)
+        //{
+        //    _listenThread = new Thread(new ThreadStart(StartListening));
+        //    _listenThread.Start();
+        //    lblConnectionStatus.Content = "Listening";
+        //}
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                _server = null;
-                _listenThread.Abort();
-            }
-            catch (Exception ex)
-            {
-            }
+        //private void btnStop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        _server = null;
+        //        _listenThread.Abort();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
 
-            lblConnectionStatus.Content = "Not listening";
-        }
+        //    lblConnectionStatus.Content = "Not listening";
+        //}
 
         private void StartListening()
         {
@@ -98,14 +102,14 @@ namespace PewPew
                 this.sensor.ColorStream.Enable(this.colorImageFormat);
                 this.colorPixels = new byte[this.sensor.ColorStream.FramePixelDataLength];
                 this.colorImgSource = new WriteableBitmap(this.sensor.ColorStream.FrameWidth, this.sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
-                this.ColorImage.Source = this.colorImgSource;
+                //this.ColorImage.Source = this.colorImgSource;
                 this.sensor.ColorFrameReady += this.SensorColorFrameReady;
 
                 this.sensor.SkeletonStream.Enable();
                 this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
                 this.drawingGroup = new DrawingGroup();
                 this.skeletonImgSource = new DrawingImage(this.drawingGroup);
-                this.SkeletonImage.Source = this.skeletonImgSource;
+                //this.SkeletonImage.Source = this.skeletonImgSource;
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
 
                 try
@@ -116,7 +120,91 @@ namespace PewPew
                 {
                     this.sensor = null;
                 }
+
+                initGame();
             }
+        }
+
+        private void initGame()
+        {
+            MyGame currGame = new MyGame();
+
+            // clip video to show top bar
+            VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 383), new System.Windows.Point(2820, 1580)));
+
+            // init combination image & blinking action
+            Image comb = new Image();
+            DoubleAnimation targetFader = new DoubleAnimation();
+            targetFader.From = 1.0;
+            targetFader.To = 0.0;
+            targetFader.Duration = new Duration(TimeSpan.FromSeconds(1));
+            targetFader.AutoReverse = true;
+            targetFader.RepeatBehavior = RepeatBehavior.Forever;
+            Storyboard myStoryboard = new Storyboard();
+            myStoryboard.Children.Add(targetFader);
+            Storyboard.SetTargetProperty(targetFader, new PropertyPath(System.Windows.Shapes.Rectangle.OpacityProperty));
+            this.RegisterName("combToFade", comb);
+            Storyboard.SetTargetName(targetFader, "combToFade");
+
+            // random enemy helper
+            Random randCombination = new Random();
+
+            Panel.SetZIndex(PlayCanvas, 10000);
+
+            // summon a target
+            DispatcherTimer targetSummoner = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Normal, delegate
+            {
+                TimeSpan checkTime = VideoControl.Position;
+
+                if ((checkTime.Seconds % 15) == 0 && (checkTime.Seconds != 0))
+                {
+                    int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
+                    lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
+                    comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
+                    PlayCanvas.Children.Add(comb);
+                    currGame.targetAppears = true;
+
+                    myStoryboard.Begin(this);
+                }
+
+                if ((currGame.currTargetCounter < 9) && currGame.targetAppears)
+                {
+                    currGame.currTargetCounter++;
+                }
+                else
+                {
+                    PlayCanvas.Children.Remove(comb);
+                    currGame.targetAppears = false;
+                    currGame.currTargetCounter = 0;
+                }
+
+            }, this.Dispatcher);
+
+            // moving target
+            DispatcherTimer videoPanning = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 5), DispatcherPriority.Normal, delegate
+            {
+                if (currGame.goingLeft)
+                {
+                    VideoControl.Arrange(new Rect(new System.Windows.Point(currGame.pixelCount--, 0), new System.Windows.Point(2820, 1580)));
+                    if (currGame.pixelCount < -1500)
+                    {
+                        currGame.goingLeft = false;
+                    }
+                }
+                else
+                {
+                    VideoControl.Arrange(new Rect(new System.Windows.Point(currGame.pixelCount++, 0), new System.Windows.Point(2820, 1580)));
+                    if (currGame.pixelCount > 0)
+                    {
+                        currGame.goingLeft = true;
+                    }
+                }
+
+            }, this.Dispatcher);
+
+
+
+ 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

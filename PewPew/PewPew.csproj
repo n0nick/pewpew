@@ -55,7 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Game\MyGame.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\Target.cs" />
     <Compile Include="Server\SimpleHttpServer.cs" />
     <Compile Include="Server\Communicator.cs" />
     <Compile Include="Server\KinectHttpServer.cs" />
@@ -103,6 +105,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Kinect Interface\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\comb1.png" />
+    <Resource Include="images\comb2.png" />
+    <Resource Include="images\comb3.png" />
+    <Resource Include="images\comb4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
