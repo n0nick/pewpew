@@ -12,6 +12,7 @@ namespace PewPew.Game
         public int currTargetCounter = 0;
         public bool goingLeft = false;
         public int pixelCount = 0;
+        public int numOfLives = 3;
 
         public MyGame()
         {

@@ -19,7 +19,7 @@ using System.Threading;
 using System.IO;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using PewPew.Game;
+
 
 namespace PewPew
 {
@@ -127,10 +127,14 @@ namespace PewPew
 
         private void initGame()
         {
+            // Server Start
+            _listenThread = new Thread(new ThreadStart(StartListening));
+            _listenThread.Start();
+
             MyGame currGame = new MyGame();
 
             // clip video to show top bar
-            VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 383), new System.Windows.Point(2820, 1580)));
+            VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 420), new System.Windows.Point(2820, 1580)));
 
             // init combination image & blinking action
             Image comb = new Image();
@@ -213,6 +217,8 @@ namespace PewPew
             {
                 this.sensor.Stop();
             }
+
+            
         }
 
         private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)

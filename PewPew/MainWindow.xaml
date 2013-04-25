@@ -32,7 +32,7 @@
 
         <Canvas x:Name="PlayCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="403,31,27,511" Grid.RowSpan="2" />
 
-        <ContentPresenter Name="MyContent" ClipToBounds="True" Margin="0,-338,0,338">
+        <ContentPresenter Name="MyContent" ClipToBounds="True" Margin="0,-383,0,338">
             <ContentPresenter.Content>
                 <MediaElement Name="VideoControl" Width="2820" Height ="1580"
                               Source="c:/data/nfs2.mp4" LoadedBehavior="Play" Stretch="Fill" >
