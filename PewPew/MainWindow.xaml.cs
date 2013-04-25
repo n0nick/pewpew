@@ -30,7 +30,6 @@ namespace PewPew
 
         private KinectSensor sensor;
         private MyGame currGame;
-        
 
         // skeleton
         private DrawingGroup drawingGroup;
@@ -127,10 +126,11 @@ namespace PewPew
 
         private void initGame()
         {
+            VideoControl.Play();
             currGame = new MyGame();
 
             Image healthBar = new Image();
-            healthBar.Source = new BitmapImage(new Uri((@"../../images/comb2.png"), UriKind.Relative));
+            healthBar.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
             healthBarCanvas.Children.Add(healthBar);
 
             // init targets
@@ -156,7 +156,6 @@ namespace PewPew
             VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 420), new System.Windows.Point(2820, 1580)));
 
             // init combination image & blinking action
-            var comb = this.CominationImage;
             DoubleAnimation targetFader = new DoubleAnimation();
             targetFader.From = 1.0;
             targetFader.To = 0.0;
@@ -166,7 +165,7 @@ namespace PewPew
             Storyboard myStoryboard = new Storyboard();
             myStoryboard.Children.Add(targetFader);
             Storyboard.SetTargetProperty(targetFader, new PropertyPath(System.Windows.Shapes.Rectangle.OpacityProperty));
-            this.RegisterName("combToFade", comb);
+            this.RegisterName("combToFade", this.CombinationImage);
             Storyboard.SetTargetName(targetFader, "combToFade");
 
             //// init explosion image & blinking action
@@ -214,12 +213,11 @@ namespace PewPew
                     }
                     else
                     {
-                        comb.Visibility = System.Windows.Visibility.Hidden;
-
                         // init next target
                         currGame.currTargetIndex++;
                         currGame.targetAppears = false;
                         currGame.currTargetSecCounter = 0;
+                        RemoveTarget();
                     }
                 }
 
@@ -299,11 +297,31 @@ namespace PewPew
                         {
                             playWinSequence();
                         }
-                        else
+                        if (currGame.numOfLives == 2)
                         {
+                            // remove crosshair
+                            PlayCanvas.Children.Remove(currGame.currHit);
+
                             // update health bar
+                            healthBar.Source = new BitmapImage(new Uri((@"../../images/1livesleft.png"), UriKind.Relative));
                             currGame.numOfLives--;
+
+                            RemoveTarget();
+
                         }
+                        if (currGame.numOfLives == 3)
+                        {
+                            // remove crosshair
+                            PlayCanvas.Children.Remove(currGame.currHit);
+
+                            // update health bar
+                            healthBar.Source = new BitmapImage(new Uri((@"../../images/2livesleft.png"), UriKind.Relative));
+                            currGame.numOfLives--;
+                            currGame.targetAppears = false;
+
+                            RemoveTarget();
+                        }
+
 
                     }
                 }
@@ -311,12 +329,23 @@ namespace PewPew
             }, this.Dispatcher);
         }
 
+        private void RemoveTarget()
+        {
+            this.CombinationImage.Visibility = System.Windows.Visibility.Hidden;
+
+            // init next target
+            currGame.currTargetIndex++;
+            currGame.targetAppears = false;
+            currGame.currTargetSecCounter = 0;
+        }
+
 
 
         private void playWinSequence()
         {
+            VideoControl.Stop();
             // and end game
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void playExplosion()
