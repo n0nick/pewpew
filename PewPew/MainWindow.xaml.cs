@@ -52,6 +52,9 @@ namespace PewPew
         private byte[] colorPixels;
         private ColorImageFormat colorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
 
+        private BitmapImage crosshairBitmap = new BitmapImage(new Uri((@"../../images/crosshair.png"), UriKind.Relative));
+        private BitmapImage explosionBitmap = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
+
         public MainWindow()
         {
             InitializeComponent();
@@ -169,8 +172,8 @@ namespace PewPew
             Storyboard.SetTargetName(targetFader, "combToFade");
 
             //// init explosion image & blinking action
-            Image explosion = new Image();
-            explosion.Source = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
+            // Image explosion = new Image();
+            // explosion.Source = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
 
             soundPlayer.LoadedBehavior = MediaState.Manual;
             soundPlayer.ScrubbingEnabled = true;
@@ -199,7 +202,7 @@ namespace PewPew
             {
                 Width = 128,
                 Height = 128,
-                Source = new BitmapImage(new Uri((@"../../images/crosshair.png"), UriKind.Relative))
+                Source = this.crosshairBitmap,
             };
             
             // random enemy helper
@@ -221,6 +224,13 @@ namespace PewPew
                     currGame.targetAppears = true;
 
                     myStoryboard.Begin(this);
+                }
+
+                if (currGame.explosion)
+                {
+                    PlayCanvas.Children.Remove(currGame.crosshair);
+                    currGame.crosshair.Source = this.crosshairBitmap;
+                    currGame.explosion = false;
                 }
 
                 if (currGame.targetAppears)
@@ -283,19 +293,14 @@ namespace PewPew
                     double crosshairTop = crosshairY - (crosshair.Height / 2);
                     crosshair.Margin = new Thickness(crosshairLeft, crosshairTop, 0, 0);
 
-                    if (currGame.currExplosion != null)
-                    {
-                        PlayCanvas.Children.Remove(currGame.currExplosion);
-                    }
-
                     if (currGame.crosshair != null)
                     {
                         PlayCanvas.Children.Remove(currGame.crosshair);
                     }
 
-                    PlayCanvas.Children.Add(explosion);
+                    // PlayCanvas.Children.Add(explosion);
                     //Helper.MoveTo(explosion, x, y);
-                    currGame.currExplosion = explosion;
+                    // currGame.currExplosion = explosion;
                     PlayCanvas.Children.Add(crosshair);
                     //Panel.SetZIndex(crosshair, 12);
                     currGame.crosshair = crosshair; 
@@ -319,7 +324,6 @@ namespace PewPew
                             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/" + (currGame.numOfLives - 1).ToString() + "livesleft.png"), UriKind.Relative));
                         }
 
-                        PlayCanvas.Children.Remove(currGame.crosshair);
                         currGame.numOfLives--;
                         RemoveTarget();
 
@@ -364,6 +368,8 @@ namespace PewPew
 
         private void playExplosion()
         {
+            currGame.crosshair.Source = this.explosionBitmap;
+            currGame.explosion = true;
             
             soundPlayer.Play();
             soundPlayer.Position = new TimeSpan(0, 0, 0);

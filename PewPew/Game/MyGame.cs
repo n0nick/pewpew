@@ -20,9 +20,11 @@ namespace PewPew.Game
         public TargetType currTarget = null;
         public Player player;
         public Image crosshair = null;
-        public Image currExplosion = null;
+        
         public int score = 0;
         public bool gameOver = false;
+
+        public Boolean explosion = false;
 
         public int CAR_RADIUS = 200;
         public Point car = new Point() { X = 0, Y = 0 };
