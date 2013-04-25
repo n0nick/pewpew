@@ -153,7 +153,7 @@ namespace PewPew
                             this.updatePlayerPosition(skel);
                             this.RenderPlayerHands(dc);
                             this.DrawBonesAndJoints(skel, dc);
-                            //break; // moualem
+                            break; // moualem
                         }
                     }
                 }
@@ -188,7 +188,6 @@ namespace PewPew
         {
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.leftHand), JointThickness, JointThickness);
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.rightHand), JointThickness, JointThickness);
-
             dc.DrawEllipse(this.centerPointBrush, null, this.SkeletonPointToScreen(this.player.center), JointThickness, JointThickness);
         }
 

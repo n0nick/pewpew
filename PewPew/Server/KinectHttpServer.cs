@@ -41,9 +41,9 @@ namespace PewPew.Game
             p.outputStream.WriteLine("POST method not supported!");
         }
 
-        private GameData ParseParameters(string url, out string callback)
+        private string ParseParameters(string url, out string callback)
         {
-            GameData data = new GameData();
+            string retVal = string.Empty;
             callback = "invalid";
 
             try
@@ -54,34 +54,14 @@ namespace PewPew.Game
                 if (parameters != null)
                 {
                     callback = parameters["callback"];
-                    data.Weapon = parameters["w"];
-
-                    if(parameters["x"] != null)
-                        data.x = float.Parse(parameters["x"]);
-
-                    if (parameters["y"] != null)
-                        data.y = float.Parse(parameters["y"]);
-
-                    if (parameters["z"] != null)
-                        data.z = float.Parse(parameters["z"]);
-
-                    if (parameters["a"] != null)
-                        data.a = float.Parse(parameters["a"]);
-
-                    if (parameters["b"] != null)
-                        data.b = float.Parse(parameters["b"]);
-
-                    if (parameters["g"] != null)
-                        data.g = float.Parse(parameters["g"]);
-
-                        
+                    retVal = parameters["w"];   
                 }
             }
             catch (Exception ex)
             {
             }
 
-            return data;
+            return retVal;
         }
     }
 }

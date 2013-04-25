@@ -57,7 +57,6 @@
     </ApplicationDefinition>
     <Compile Include="Game\Player.cs" />
     <Compile Include="Server\Communicator.cs" />
-    <Compile Include="Game\GameData.cs" />
     <Compile Include="Server\KinectHttpServer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
