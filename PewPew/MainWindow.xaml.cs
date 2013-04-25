@@ -306,40 +306,22 @@ namespace PewPew
                         currGame.score += 5000;
                         lblScore.Content = currGame.score;
 
+                        playExplosion();
+
                         if (currGame.numOfLives == 1)
                         {
                             RemoveTarget();
                             currGame.gameOver = true;
                             playWinSequence();
                         }
-                        if (currGame.numOfLives == 2)
+                        else
                         {
-                            playExplosion();
-
-                            // remove crosshair
-                            PlayCanvas.Children.Remove(currGame.crosshair);
-
-                            // update health bar
-                            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/1livesleft.png"), UriKind.Relative));
-                            currGame.numOfLives--;
-
-                            RemoveTarget();
-
+                            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/" + (currGame.numOfLives - 1).ToString() + "livesleft.png"), UriKind.Relative));
                         }
-                        if (currGame.numOfLives == 3)
-                        {
-                            playExplosion();
 
-                            // remove crosshair
-                            PlayCanvas.Children.Remove(currGame.crosshair);
-
-                            // update health bar
-                            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/2livesleft.png"), UriKind.Relative));
-                            currGame.numOfLives--;
-                            currGame.targetAppears = false;
-
-                            RemoveTarget();
-                        }
+                        PlayCanvas.Children.Remove(currGame.crosshair);
+                        currGame.numOfLives--;
+                        RemoveTarget();
 
 
                     }
