@@ -373,7 +373,7 @@ namespace PewPew
             if ((player.X > (car.X - currGame.CAR_RADIUS)) && (player.X < (car.X + currGame.CAR_RADIUS)) &&
                 (player.Y > (car.Y + currGame.CAR_RADIUS)))
             {
-                lblScore.Content = "Hit";
+                // lblScore.Content = "Hit";
                 positioHit = true;
             }
 
