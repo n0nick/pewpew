@@ -1,4 +1,5 @@
 ﻿using Microsoft.Kinect;
+using PewPew.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace PewPew.Game
         public SkeletonPoint leftHand;
         public SkeletonPoint rightHand;
         public SkeletonPoint center;
+        public ControllerDirection _contollerDirection;
 
         public TargetType weapon;
 

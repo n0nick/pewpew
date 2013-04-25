@@ -244,9 +244,6 @@ namespace PewPew
                 }
 
             }, this.Dispatcher);
-
-
- 
         }
 
         private void playWinSequence()
@@ -309,6 +306,7 @@ namespace PewPew
 
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
+
                             this.updatePlayerPosition(skel);
                             this.RenderPlayerHands(dc);
                             this.DrawBonesAndJoints(skel, dc);
@@ -319,6 +317,14 @@ namespace PewPew
 
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
             }
+        }
+
+        private void DisplaySkeletonPoint(SkeletonPoint sp)
+        {
+            lblQrPoints.Content = sp.X + " " + sp.Y + " " + sp.Z;
+            lblQrText.Content = sp.X + " " + sp.Y + " " + sp.Z;
+            lblScore.Content = sp.X + " " + sp.Y + " " + sp.Z;
+            lblStatusBar.Content = sp.X + " " + sp.Y + " " + sp.Z;
         }
 
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
@@ -348,6 +354,8 @@ namespace PewPew
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.leftHand), JointThickness, JointThickness);
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.rightHand), JointThickness, JointThickness);
             dc.DrawEllipse(this.playerPointBrush, null, this.SkeletonPointToScreen(currGame.player.center), JointThickness, JointThickness);
+
+            DisplaySkeletonPoint(currGame.player.center);
         }
 
         private void DrawBonesAndJoints(Skeleton skeleton, DrawingContext drawingContext)

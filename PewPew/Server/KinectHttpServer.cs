@@ -1,4 +1,5 @@
 ﻿using Bend.Util;
+using PewPew.Server;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ namespace PewPew.Game
             p.writeSuccess();
 
             string callback = String.Empty;
-            this.setCurrentWeapons(ParseParameters(p.http_url, out callback));
+            this.setData(ParseParameters(p.http_url, out callback));
 
             try
             {
@@ -38,9 +39,19 @@ namespace PewPew.Game
             }
         }
 
-        private void setCurrentWeapons(string weaponsStr)
+        private void setData(DataFromClient data)
         {
-            this.player.UpdateWeapon(weaponsStr);
+            if (data != null)
+            {
+                this.player.UpdateWeapon(data.weapons);
+                this.player._contollerDirection.xy = data.xy;
+                this.player._contollerDirection.xz = data.xz;
+                this.player._contollerDirection.yz = data.yz;
+            }
+            else
+            {
+                this.player.UpdateWeapon(String.Empty);
+            }
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
@@ -48,10 +59,10 @@ namespace PewPew.Game
             p.outputStream.WriteLine("POST method not supported!");
         }
 
-        private string ParseParameters(string url, out string callback)
+        private DataFromClient ParseParameters(string url, out string callback)
         {
-            string retVal = string.Empty;
             callback = "invalid";
+            var data = new DataFromClient();
 
             try
             {
@@ -61,15 +72,22 @@ namespace PewPew.Game
                 if (parameters != null)
                 {
                     callback = parameters["callback"];
-                    retVal = parameters["w"];   
+                    data.weapons = parameters["w"];
+
+                    if(parameters["xy"] != null)
+                        data.xy = double.Parse(parameters["xy"]);
+                    if (parameters["xz"] != null)
+                        data.xy = double.Parse(parameters["xz"]);
+                    if (parameters["yz"] != null)
+                        data.xy = double.Parse(parameters["yz"]);
                 }
             }
             catch
             {
-                retVal = null;
+                data = null;
             }
 
-            return retVal;
+            return data;
         }
     }
 }
