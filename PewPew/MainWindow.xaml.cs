@@ -156,7 +156,7 @@ namespace PewPew
             VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 420), new System.Windows.Point(2820, 1580)));
 
             // init combination image & blinking action
-            Image comb = new Image();
+            var comb = this.CominationImage;
             DoubleAnimation targetFader = new DoubleAnimation();
             targetFader.From = 1.0;
             targetFader.To = 0.0;
@@ -198,8 +198,9 @@ namespace PewPew
                     //lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
                     comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
+
+                    comb.Visibility = System.Windows.Visibility.Visible;
                     
-                    PlayCanvas.Children.Add(comb);
                     currGame.targetAppears = true;
 
                     myStoryboard.Begin(this);
@@ -213,7 +214,7 @@ namespace PewPew
                     }
                     else
                     {
-                        PlayCanvas.Children.Remove(comb);
+                        comb.Visibility = System.Windows.Visibility.Hidden;
 
                         // init next target
                         currGame.currTargetIndex++;
