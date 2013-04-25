@@ -16,7 +16,7 @@ namespace PewPew.Game
 
         public TargetType weapon;
 
-        private Point screenPoint;
+        // private Point screenPoint;
 
         public void UpdateHands(Skeleton skeleton)
         {

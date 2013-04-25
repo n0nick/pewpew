@@ -64,8 +64,9 @@ namespace PewPew.Game
                     retVal = parameters["w"];   
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                retVal = null;
             }
 
             return retVal;
