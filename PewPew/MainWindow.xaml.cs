@@ -388,10 +388,9 @@ namespace PewPew
                 positioHit = true;
             }
 
-            // bool weaponHit = currGame.player.weapon != null && currGame.player.weapon.Equals(currGame.currTarget);
-            bool weaponHit = true;
+            bool weaponHit = currGame.player.weapon != null && currGame.player.weapon.Equals(currGame.currTarget);
 
-            return positioHit && weaponHit;
+            return (positioHit && weaponHit);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
