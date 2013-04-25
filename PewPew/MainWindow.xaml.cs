@@ -127,6 +127,8 @@ namespace PewPew
         private void initGame()
         {
             VideoControl.Play();
+            VideoControl.Volume = 0.1;
+
             currGame = new MyGame();
             playWinSequence();
             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
@@ -169,6 +171,12 @@ namespace PewPew
             //// init explosion image & blinking action
             Image explosion = new Image();
             explosion.Source = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
+
+            soundPlayer.LoadedBehavior = MediaState.Manual;
+            soundPlayer.ScrubbingEnabled = true;
+            soundPlayer.Source = new Uri((@"../../sounds/explosion.mp3"), UriKind.Relative);
+            
+
             //DoubleAnimation explosionFader = new DoubleAnimation();
             //explosionFader.From = 0.0;
             //explosionFader.To = 1.0;
@@ -210,10 +218,8 @@ namespace PewPew
                     }
                     else
                     {
-                        // init next target
-                        currGame.currTargetIndex++;
-                        currGame.targetAppears = false;
-                        currGame.currTargetSecCounter = 0;
+                        currGame.score -= 5000;
+                        lblScore.Content = currGame.score;
                         RemoveTarget();
 
                         // init next target
@@ -294,9 +300,13 @@ namespace PewPew
                     if (playerHit(new Point(x, y)))
                     {
                         playExplosion();
+                        currGame.score += 5000;
+                        lblScore.Content = currGame.score;
 
                         if (currGame.numOfLives == 1)
                         {
+                            RemoveTarget();
+                            currGame.gameOver = true;
                             playWinSequence();
                         }
                         if (currGame.numOfLives == 2)
@@ -345,6 +355,7 @@ namespace PewPew
 
         private void playWinSequence()
         {
+
             VideoControl.Stop();
             ImageBrush background = new ImageBrush();
             ////spaceship.SetValue(Canvas.ZIndexProperty, 100000000);
@@ -361,11 +372,17 @@ namespace PewPew
 
         private void playExplosion()
         {
-            // throw new NotImplementedException();
+            
+            soundPlayer.Play();
+            soundPlayer.Position = new TimeSpan(0, 0, 0);
         }
 
         private bool playerHit(Point player)
         {
+            if (currGame.gameOver)
+            {
+                return false;
+            }
             bool positioHit = false;
 
             Point car = currGame.car;

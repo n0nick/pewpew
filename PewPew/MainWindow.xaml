@@ -36,8 +36,28 @@
                 <MediaElement Name="VideoControl" Width="2820" Height ="1580"
                               Source="c:/data/nfs2.mp4" LoadedBehavior="Manual" Stretch="Fill" >
                 </MediaElement>
+
             </ContentPresenter.Content>
         </ContentPresenter>
+
+        <ContentPresenter Name="soundPresenter" ClipToBounds="True" Margin="0,-383,0,338">
+            <ContentPresenter.Content>
+                <MediaElement Name="soundPlayer" Width="1" Height ="1"
+                              LoadedBehavior="Manual"  >
+                </MediaElement>
+
+            </ContentPresenter.Content>
+        </ContentPresenter>
+
+        <ContentPresenter Name="winningSoundPresenter" ClipToBounds="True" Margin="0,-383,0,338">
+            <ContentPresenter.Content>
+                <MediaElement Name="winningSoundPlayer" Width="1" Height ="1"
+                              LoadedBehavior="Manual"  >
+                </MediaElement>
+
+            </ContentPresenter.Content>
+        </ContentPresenter>
+
 
         <DockPanel Grid.Row="2" Margin="0" >
             <Label x:Name="lblStatusBar" Content="Ready." HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Width="342" />

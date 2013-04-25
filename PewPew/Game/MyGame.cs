@@ -21,6 +21,8 @@ namespace PewPew.Game
         public Player player;
         public Ellipse currHit = null;
         public Image currExplosion = null;
+        public int score = 0;
+        public bool gameOver = false;
 
         public int CAR_RADIUS = 200;
         public Point car = new Point() { X = 0, Y = 0 };

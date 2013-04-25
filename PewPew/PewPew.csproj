@@ -134,7 +134,9 @@
     <Resource Include="images\3livesleft.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sounds\win.mp3" />
     <Resource Include="images\Victory.png" />
+    <Content Include="sounds\explosion.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
