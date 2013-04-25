@@ -130,7 +130,8 @@ namespace PewPew
 
             // init targets
             TimeSpan[] targetTriggers = new TimeSpan[3];
-            targetTriggers[0] = new TimeSpan(0, 0, 10);
+            //targetTriggers[0] = new TimeSpan(0, 0, 10);
+            targetTriggers[0] = new TimeSpan(0, 0, 3);
             targetTriggers[1] = new TimeSpan(0, 0, 23);
             targetTriggers[2] = new TimeSpan(0, 0, 40);
 
@@ -157,6 +158,21 @@ namespace PewPew
             this.RegisterName("combToFade", comb);
             Storyboard.SetTargetName(targetFader, "combToFade");
 
+            //// init explosion image & blinking action
+            Image explosion = new Image();
+            explosion.Source = new BitmapImage(new Uri((@"../../images/Explosion.png"), UriKind.Relative));
+            //DoubleAnimation explosionFader = new DoubleAnimation();
+            //explosionFader.From = 0.0;
+            //explosionFader.To = 1.0;
+            //explosionFader.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+            //explosionFader.AutoReverse = true;
+            //explosionFader.RepeatBehavior = RepeatBehavior.Forever;
+            //Storyboard explosionBoard = new Storyboard();
+            //explosionBoard.Children.Add(explosionFader);
+            //Storyboard.SetTargetProperty(explosionFader, new PropertyPath(System.Windows.Shapes.Rectangle.OpacityProperty));
+            //this.RegisterName("explode", explosion);
+            //Storyboard.SetTargetName(explosionFader, "explode");
+
             // random enemy helper
             Random randCombination = new Random();
 
@@ -166,12 +182,12 @@ namespace PewPew
                 TimeSpan checkTime = VideoControl.Position;
 
                 if (!currGame.targetAppears && (currGame.currTargetIndex < targetTriggers.Length) && (checkTime.Seconds == targetTriggers[currGame.currTargetIndex].Seconds))
-                //if (!currGame.targetAppears &&  (checkTime.Seconds % 5 == 0)) 
                 {
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
                     lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
                     comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
+                    
                     PlayCanvas.Children.Add(comb);
                     currGame.targetAppears = true;
 
@@ -190,7 +206,7 @@ namespace PewPew
 
                         // init next target
                         currGame.currTargetIndex++;
-                        currGame.targetAppears = false;
+                        //currGame.targetAppears = false;
                         currGame.currTargetSecCounter = 0;
                     }
                 }
@@ -222,10 +238,47 @@ namespace PewPew
             // handle target hits
             DispatcherTimer hitHandler = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Normal, delegate
             {
+                Point relativePoint = VideoControl.TransformToAncestor(this).Transform(new Point(0, 0));
+                lblQrText.Content = "x is: " + relativePoint.X + ", y is: " + relativePoint.Y;
                 if (currGame.targetAppears)
                 {
-                    Point relativePoint = VideoControl.TransformToAncestor(this).Transform(new Point(0, 0));
-                    Point playerHitPoint = new Point(currGame.player.center.X, currGame.player.center.Y);
+                    // generate new hitpoint
+                    Ellipse ellipse = new Ellipse();
+
+                    ellipse.Stroke = System.Windows.Media.Brushes.Red;
+                    ellipse.Fill = System.Windows.Media.Brushes.Red;
+                    ellipse.HorizontalAlignment = HorizontalAlignment.Center;
+                    ellipse.VerticalAlignment = VerticalAlignment.Center;
+
+                    ellipse.Width = (int)(2 * 0.1 * 100);
+                    ellipse.Height = (int)(2 * 0.1 * 100);
+
+                    Point calibratedCenter = this.SkeletonPointToScreen(currGame.player.center);
+
+                    double x = ((int)calibratedCenter.X * (int)this.ActualWidth) / this.sensor.ColorStream.FrameWidth - 300;
+                    double y = ((int)calibratedCenter.Y * (int)this.ActualHeight) / this.sensor.ColorStream.FrameHeight;
+
+                    double left = x - (ellipse.Width / 2);
+                    double top = y - (ellipse.Height / 2);
+                    ellipse.Margin = new Thickness(left, top, 0, 0);
+
+                    if (currGame.currExplosion != null)
+                    {
+                        PlayCanvas.Children.Remove(currGame.currExplosion);
+                    }
+
+                    if (currGame.currHit != null)
+                    {
+                        PlayCanvas.Children.Remove(currGame.currHit);
+                    }
+
+                    PlayCanvas.Children.Add(explosion);
+                    //Helper.MoveTo(explosion, x, y);
+                    currGame.currExplosion = explosion;
+                    PlayCanvas.Children.Add(ellipse);
+                    currGame.currHit = ellipse; 
+
+                    Point playerHitPoint = new Point(x, y);
                     if (checkForHit(playerHitPoint, relativePoint))
                     {
                         playExplosion();
@@ -246,6 +299,8 @@ namespace PewPew
             }, this.Dispatcher);
         }
 
+
+
         private void playWinSequence()
         {
             // and end game
@@ -265,6 +320,11 @@ namespace PewPew
             }
 
             bool isAccurateHit = false;
+            if (((relativePoint.X - playerHitPoint.X) <= 300) && ((relativePoint.Y - playerHitPoint.Y <= 300)))
+            {
+                lblScore.Content = "Hit";
+                isAccurateHit = true;
+            }
 
             if (currGame.player.weapon.Equals(currGame.currTarget) && isAccurateHit)
             {

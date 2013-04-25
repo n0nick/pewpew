@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace PewPew.Game
 {
@@ -16,6 +18,8 @@ namespace PewPew.Game
         public int numOfLives = 3;
         public TargetType currTarget = null;
         public Player player;
+        public Ellipse currHit = null;
+        public Image currExplosion = null;
 
         public MyGame()
         {

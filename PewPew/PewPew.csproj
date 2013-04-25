@@ -59,6 +59,7 @@
     <Compile Include="Game\MyGame.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Target.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="KinectWindow.xaml.cs">
       <DependentUpon>KinectWindow.xaml</DependentUpon>
     </Compile>
@@ -120,6 +121,12 @@
     <Resource Include="images\comb2.png" />
     <Resource Include="images\comb3.png" />
     <Resource Include="images\comb4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Explosion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Explosion.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
