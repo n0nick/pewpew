@@ -19,7 +19,7 @@ namespace PewPew.Game
         public int numOfLives = 3;
         public TargetType currTarget = null;
         public Player player;
-        public Image currHit = null;
+        public Image crosshair = null;
         public Image currExplosion = null;
         public int score = 0;
         public bool gameOver = false;

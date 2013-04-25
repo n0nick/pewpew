@@ -288,9 +288,9 @@ namespace PewPew
                         PlayCanvas.Children.Remove(currGame.currExplosion);
                     }
 
-                    if (currGame.currHit != null)
+                    if (currGame.crosshair != null)
                     {
-                        PlayCanvas.Children.Remove(currGame.currHit);
+                        PlayCanvas.Children.Remove(currGame.crosshair);
                     }
 
                     PlayCanvas.Children.Add(explosion);
@@ -298,7 +298,7 @@ namespace PewPew
                     currGame.currExplosion = explosion;
                     PlayCanvas.Children.Add(crosshair);
                     //Panel.SetZIndex(crosshair, 12);
-                    currGame.currHit = crosshair; 
+                    currGame.crosshair = crosshair; 
 
                     if (playerHit(new Point(crosshairX, crosshairY)))
                     {
@@ -317,7 +317,7 @@ namespace PewPew
                             playExplosion();
 
                             // remove crosshair
-                            PlayCanvas.Children.Remove(currGame.currHit);
+                            PlayCanvas.Children.Remove(currGame.crosshair);
 
                             // update health bar
                             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/1livesleft.png"), UriKind.Relative));
@@ -331,7 +331,7 @@ namespace PewPew
                             playExplosion();
 
                             // remove crosshair
-                            PlayCanvas.Children.Remove(currGame.currHit);
+                            PlayCanvas.Children.Remove(currGame.crosshair);
 
                             // update health bar
                             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/2livesleft.png"), UriKind.Relative));
