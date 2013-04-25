@@ -128,7 +128,7 @@ namespace PewPew
         {
             VideoControl.Play();
             currGame = new MyGame();
-
+            playWinSequence();
             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
 
             // init targets
@@ -346,6 +346,15 @@ namespace PewPew
         private void playWinSequence()
         {
             VideoControl.Stop();
+            ImageBrush background = new ImageBrush();
+            ////spaceship.SetValue(Canvas.ZIndexProperty, 100000000);
+            background.ImageSource = new BitmapImage(new Uri(@"../../images/Victory.png", UriKind.Relative));
+            VideoControl.Visibility = Visibility.Hidden;
+            HealthBarImage.Visibility = Visibility.Hidden;
+            background.Stretch = Stretch.Fill;
+            
+            //PlayCanvas.Background = background;//System.Windows.Media.Brushes.Black;
+            this.Background = background;
             // and end game
             //throw new NotImplementedException();
         }
