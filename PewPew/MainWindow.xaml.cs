@@ -126,6 +126,7 @@ namespace PewPew
 
         private void initGame()
         {
+            
             VideoControl.Play();
             VideoControl.Volume = 0.1;
 
@@ -140,10 +141,10 @@ namespace PewPew
             targetTriggers[2] = new TimeSpan(0, 0, 29);
             targetTriggers[3] = new TimeSpan(0, 0, 40);
             targetTriggers[4] = new TimeSpan(0, 0, 52);
-            targetTriggers[5] = new TimeSpan(0, 0, 64);
-            targetTriggers[6] = new TimeSpan(0, 0, 76);
-            targetTriggers[7] = new TimeSpan(0, 0, 88);
-            targetTriggers[8] = new TimeSpan(0, 0, 100);
+            targetTriggers[5] = new TimeSpan(0, 1, 4);
+            targetTriggers[6] = new TimeSpan(0, 1, 16);
+            targetTriggers[7] = new TimeSpan(0, 1, 28);
+            targetTriggers[8] = new TimeSpan(0, 1, 40);
 
             // Server Start
             _listenThread = new Thread(new ThreadStart(StartListening));
@@ -174,7 +175,12 @@ namespace PewPew
             soundPlayer.LoadedBehavior = MediaState.Manual;
             soundPlayer.ScrubbingEnabled = true;
             soundPlayer.Source = new Uri((@"../../sounds/explosion.mp3"), UriKind.Relative);
-            
+
+            winningSoundPlayer.LoadedBehavior = MediaState.Manual;
+            winningSoundPlayer.ScrubbingEnabled = true;
+            winningSoundPlayer.Source = new Uri((@"../../sounds/win.mp3"), UriKind.Relative);
+            winningSoundPlayer.Volume = 10;
+            playWinSequence();
 
             //DoubleAnimation explosionFader = new DoubleAnimation();
             //explosionFader.From = 0.0;
@@ -298,7 +304,7 @@ namespace PewPew
 
                     if (playerHit(new Point(x, y)))
                     {
-                        playExplosion();
+                        
                         currGame.score += 5000;
                         lblScore.Content = currGame.score;
 
@@ -310,6 +316,8 @@ namespace PewPew
                         }
                         if (currGame.numOfLives == 2)
                         {
+                            playExplosion();
+
                             // remove crosshair
                             PlayCanvas.Children.Remove(currGame.currHit);
 
@@ -322,6 +330,8 @@ namespace PewPew
                         }
                         if (currGame.numOfLives == 3)
                         {
+                            playExplosion();
+
                             // remove crosshair
                             PlayCanvas.Children.Remove(currGame.currHit);
 
@@ -365,6 +375,7 @@ namespace PewPew
             
             //PlayCanvas.Background = background;//System.Windows.Media.Brushes.Black;
             this.Background = background;
+            winningSoundPlayer.Play();
             // and end game
             //throw new NotImplementedException();
         }
