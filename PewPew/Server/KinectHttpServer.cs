@@ -63,7 +63,15 @@ namespace PewPew.Game
             listener.Start();
             while (is_active)
             {
-                TcpClient s = listener.AcceptTcpClient();
+                TcpClient s = null;
+                try
+                {
+                    s = listener.AcceptTcpClient();
+                }
+                catch
+                {
+                    return;
+                }
                 HttpProcessor processor = new HttpProcessor(s, this);
                 Thread thread = new Thread(new ThreadStart(processor.process));
                 thread.Start();

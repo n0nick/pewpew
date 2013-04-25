@@ -196,9 +196,8 @@ namespace PewPew
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
                     //lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
-                    comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
-
-                    comb.Visibility = System.Windows.Visibility.Visible;
+                    this.CombinationImage.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
+                    this.CombinationImage.Visibility = System.Windows.Visibility.Visible;
                     
                     currGame.targetAppears = true;
 
@@ -218,6 +217,11 @@ namespace PewPew
                         currGame.targetAppears = false;
                         currGame.currTargetSecCounter = 0;
                         RemoveTarget();
+
+                        // init next target
+                        currGame.currTargetIndex++;
+                        currGame.targetAppears = false;
+                        currGame.currTargetSecCounter = 0;
                     }
                 }
 
