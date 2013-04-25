@@ -17,7 +17,7 @@
                 </TextBlock.Effect>Pew Pew!</TextBlock>
             <Label x:Name="lblQrText" Content="Wait for the weapon combination to appear on screen!" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="309"/>
             <!--Label x:Name="lblEnemy" Content="Enemy Name" Height="26" VerticalAlignment="Top" Width="105"/-->
-            <Label x:Name="lblScore" Content="0" Height="58" VerticalAlignment="Top" Width="83" FontWeight="Bold" FontSize="24"/>
+            <Label x:Name="lblScore" Content="0" Height="58" VerticalAlignment="Top" Width="100" FontWeight="Bold" FontSize="24"/>
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.RowSpan="2"/>
 
