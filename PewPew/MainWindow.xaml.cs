@@ -378,6 +378,8 @@ namespace PewPew
         {
             try
             {
+                VideoControl.LoadedBehavior = MediaState.Manual;
+                VideoControl.Stop();
                 if (null != this.sensor)
                 {
                     this.sensor.Stop();
