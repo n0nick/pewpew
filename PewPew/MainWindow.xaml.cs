@@ -180,7 +180,7 @@ namespace PewPew
             winningSoundPlayer.ScrubbingEnabled = true;
             winningSoundPlayer.Source = new Uri((@"../../sounds/win.mp3"), UriKind.Relative);
             winningSoundPlayer.Volume = 10;
-            playWinSequence();
+            
 
             //DoubleAnimation explosionFader = new DoubleAnimation();
             //explosionFader.From = 0.0;
