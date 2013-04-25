@@ -243,6 +243,7 @@ namespace PewPew
                     {
                         currGame.score -= 5000;
                         lblScore.Content = currGame.score;
+                        PlayCanvas.Children.Remove(currGame.crosshair);
                         RemoveTarget();
 
                         // init next target
