@@ -11,7 +11,7 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0" Margin="0,0,298,0">
-            <TextBlock DockPanel.Dock="Left" Margin="0 0 -1 0" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="18">
+            <TextBlock x:Name="lblLogo" DockPanel.Dock="Left" Margin="0 0 -1 0" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="18">
                 <TextBlock.Effect>
                     <DropShadowEffect/>
                 </TextBlock.Effect>Pew Pew!</TextBlock>

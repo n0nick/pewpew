@@ -185,7 +185,7 @@ namespace PewPew
                 if (!currGame.targetAppears && (currGame.currTargetIndex < targetTriggers.Length) && (checkTime.Seconds == targetTriggers[currGame.currTargetIndex].Seconds))
                 {
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
-                    lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
+                    //lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
                     comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
                     
@@ -240,7 +240,7 @@ namespace PewPew
             DispatcherTimer hitHandler = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Normal, delegate
             {
                 Point relativePoint = VideoControl.TransformToAncestor(this).Transform(new Point(0, 0));
-                lblQrText.Content = "x is: " + relativePoint.X + ", y is: " + relativePoint.Y;
+                //lblQrText.Content = "x is: " + relativePoint.X + ", y is: " + relativePoint.Y;
                 if (currGame.targetAppears)
                 {
                     // generate new hitpoint
@@ -251,8 +251,8 @@ namespace PewPew
                     ellipse.HorizontalAlignment = HorizontalAlignment.Center;
                     ellipse.VerticalAlignment = VerticalAlignment.Center;
 
-                    ellipse.Width = (int)(2 * 0.1 * 100);
-                    ellipse.Height = (int)(2 * 0.1 * 100);
+                    ellipse.Width = (int)(2 * 0.1 * 400);
+                    ellipse.Height = (int)(2 * 0.1 * 400);
 
                     Point calibratedCenter = this.SkeletonPointToScreen(currGame.player.center);
 
@@ -382,10 +382,14 @@ namespace PewPew
 
         private void DisplaySkeletonPoint(SkeletonPoint sp)
         {
+            /*
             //lblQrPoints.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblQrText.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblScore.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblStatusBar.Content = sp.X + " " + sp.Y + " " + sp.Z;
+             */
+
+            lblQrText.Content = "delta = " + (currGame.player.leftHand.Z - currGame.player.rightHand.Z);
         }
 
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)

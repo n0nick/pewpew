@@ -30,6 +30,10 @@ namespace PewPew.Game
                 Y = (this.leftHand.Y + this.rightHand.Y) / 2,
                 Z = (this.leftHand.Z + this.rightHand.Z) / 2
             };
+
+            // fix center position by Z calculation
+            //this.center.X -= 2 * (this.leftHand.Z - this.rightHand.Z);
+            this.center.X -= 6 * (skeleton.Joints[JointType.ShoulderLeft].Position.Z - skeleton.Joints[JointType.ShoulderRight].Position.Z);
         }
 
         public void UpdateWeapon(TargetType weapon)
