@@ -9,10 +9,11 @@ namespace PewPew.Game
     class MyGame
     {
         public bool targetAppears = false;
-        public int currTargetCounter = 0;
+        public int currTargetSecCounter = 0;
         public bool goingLeft = false;
         public int pixelCount = 0;
         public int numOfLives = 3;
+        public TargetType currTarget = null;
 
         public MyGame()
         {

@@ -162,6 +162,7 @@ namespace PewPew
                 {
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
                     lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
+                    currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
                     comb.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
                     PlayCanvas.Children.Add(comb);
                     currGame.targetAppears = true;
@@ -169,15 +170,15 @@ namespace PewPew
                     myStoryboard.Begin(this);
                 }
 
-                if ((currGame.currTargetCounter < 9) && currGame.targetAppears)
+                if ((currGame.currTargetSecCounter < 9) && currGame.targetAppears)
                 {
-                    currGame.currTargetCounter++;
+                    currGame.currTargetSecCounter++;
                 }
                 else
                 {
                     PlayCanvas.Children.Remove(comb);
                     currGame.targetAppears = false;
-                    currGame.currTargetCounter = 0;
+                    currGame.currTargetSecCounter = 0;
                 }
 
             }, this.Dispatcher);
@@ -204,9 +205,31 @@ namespace PewPew
 
             }, this.Dispatcher);
 
+            // handle target hits
+            DispatcherTimer hitHandler = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Normal, delegate
+            {
+                if (currGame.targetAppears)
+                {
+                    checkForHit(this.player.center.X, this.player.center.Y, null, currGame.currTarget);
+                }
+
+
+            }, this.Dispatcher);
 
 
  
+        }
+
+        private void checkForHit(float p1, float p2, TargetType targetType, TargetType currTarget)
+        {
+            if (targetType.Equals(currTarget) && isAccurateHit(p1,p2))
+            {
+            } 
+        }
+
+        private bool isAccurateHit(float p1, float p2)
+        {
+            throw new NotImplementedException();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
