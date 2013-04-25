@@ -31,7 +31,7 @@
         <ContentPresenter Name="MyContent" ClipToBounds="True" Margin="0,-383,0,338">
             <ContentPresenter.Content>
                 <MediaElement Name="VideoControl" Width="2820" Height ="1580"
-                              Source="c:/data/nfs2.mp4" LoadedBehavior="Play" Stretch="Fill" >
+                              Source="c:/data/nfs2.mp4" LoadedBehavior="Manual" Stretch="Fill" >
                 </MediaElement>
             </ContentPresenter.Content>
         </ContentPresenter>
