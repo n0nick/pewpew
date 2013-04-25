@@ -138,16 +138,15 @@ namespace PewPew
 
             // init targets
             TimeSpan[] targetTriggers = new TimeSpan[9];
-            //targetTriggers[0] = new TimeSpan(0, 0, 10);
             targetTriggers[0] = new TimeSpan(0, 0, 5);
-            targetTriggers[1] = new TimeSpan(0, 0, 17);
-            targetTriggers[2] = new TimeSpan(0, 0, 29);
-            targetTriggers[3] = new TimeSpan(0, 0, 40);
-            targetTriggers[4] = new TimeSpan(0, 0, 52);
-            targetTriggers[5] = new TimeSpan(0, 1, 4);
-            targetTriggers[6] = new TimeSpan(0, 1, 16);
-            targetTriggers[7] = new TimeSpan(0, 1, 28);
-            targetTriggers[8] = new TimeSpan(0, 1, 40);
+            targetTriggers[1] = new TimeSpan(0, 0, 20);
+            targetTriggers[2] = new TimeSpan(0, 0, 40);
+            targetTriggers[3] = new TimeSpan(0, 1, 0);
+            targetTriggers[4] = new TimeSpan(0, 1, 20);
+            targetTriggers[5] = new TimeSpan(0, 1, 47);
+            targetTriggers[6] = new TimeSpan(0, 2, 3);
+            targetTriggers[7] = new TimeSpan(0, 2, 25);
+            targetTriggers[8] = new TimeSpan(0, 2, 45);
 
             // Server Start
             _listenThread = new Thread(new ThreadStart(StartListening));
@@ -215,6 +214,7 @@ namespace PewPew
 
                 if (!currGame.targetAppears && (currGame.currTargetIndex < targetTriggers.Length) && (checkTime.Seconds == targetTriggers[currGame.currTargetIndex].Seconds))
                 {
+                    //lblQrText.Content = currGame.currTargetIndex;
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
                     //lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
@@ -243,12 +243,9 @@ namespace PewPew
                     {
                         currGame.score -= 5000;
                         lblScore.Content = currGame.score;
+                        PlayCanvas.Children.Remove(currGame.crosshair);
                         RemoveTarget();
 
-                        // init next target
-                        currGame.currTargetIndex++;
-                        currGame.targetAppears = false;
-                        currGame.currTargetSecCounter = 0;
                     }
                 }
 
@@ -392,10 +389,9 @@ namespace PewPew
                 positioHit = true;
             }
 
-            // bool weaponHit = currGame.player.weapon != null && currGame.player.weapon.Equals(currGame.currTarget);
-            bool weaponHit = true;
+            bool weaponHit = (currGame.player.weapon != null) && (currGame.player.weapon.inputText == currGame.currTarget.inputText);
 
-            return positioHit && weaponHit;
+            return (positioHit && weaponHit);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
