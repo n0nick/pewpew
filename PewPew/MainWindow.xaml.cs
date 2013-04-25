@@ -130,7 +130,6 @@ namespace PewPew
             VideoControl.Volume = 0.1;
 
             currGame = new MyGame();
-            playWinSequence();
             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
 
             // init targets
