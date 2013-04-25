@@ -25,8 +25,8 @@
 
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center" Margin="383,0,384,0" Width="0" Grid.RowSpan="2"/>
 
-        <Image Name="ColorImage" Width="480" Height="320" Canvas.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2" />
-        <Image Name="SkeletonImage" Width="480" Height="320"  Canvas.ZIndex="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2" />
+        <Image Name="ColorImage" Width="320" Height="240" Canvas.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2" />
+        <Image Name="SkeletonImage" Width="320" Height="240"  Canvas.ZIndex="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2" />
 
         <Canvas x:Name="PlayCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="403,31,27,511" Grid.RowSpan="2"  Canvas.ZIndex="9" />
 
