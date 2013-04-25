@@ -126,9 +126,11 @@ namespace PewPew
 
         private void initGame()
         {
+            
             VideoControl.Play();
-            currGame = new MyGame();
+            VideoControl.Volume = 0.1;
 
+            currGame = new MyGame();
             this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
 
             // init targets
@@ -139,10 +141,10 @@ namespace PewPew
             targetTriggers[2] = new TimeSpan(0, 0, 29);
             targetTriggers[3] = new TimeSpan(0, 0, 40);
             targetTriggers[4] = new TimeSpan(0, 0, 52);
-            targetTriggers[5] = new TimeSpan(0, 0, 64);
-            targetTriggers[6] = new TimeSpan(0, 0, 76);
-            targetTriggers[7] = new TimeSpan(0, 0, 88);
-            targetTriggers[8] = new TimeSpan(0, 0, 100);
+            targetTriggers[5] = new TimeSpan(0, 1, 4);
+            targetTriggers[6] = new TimeSpan(0, 1, 16);
+            targetTriggers[7] = new TimeSpan(0, 1, 28);
+            targetTriggers[8] = new TimeSpan(0, 1, 40);
 
             // Server Start
             _listenThread = new Thread(new ThreadStart(StartListening));
@@ -169,6 +171,17 @@ namespace PewPew
             //// init explosion image & blinking action
             Image explosion = new Image();
             explosion.Source = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
+
+            soundPlayer.LoadedBehavior = MediaState.Manual;
+            soundPlayer.ScrubbingEnabled = true;
+            soundPlayer.Source = new Uri((@"../../sounds/explosion.mp3"), UriKind.Relative);
+
+            winningSoundPlayer.LoadedBehavior = MediaState.Manual;
+            winningSoundPlayer.ScrubbingEnabled = true;
+            winningSoundPlayer.Source = new Uri((@"../../sounds/win.mp3"), UriKind.Relative);
+            winningSoundPlayer.Volume = 10;
+            playWinSequence();
+
             //DoubleAnimation explosionFader = new DoubleAnimation();
             //explosionFader.From = 0.0;
             //explosionFader.To = 1.0;
@@ -218,10 +231,8 @@ namespace PewPew
                     }
                     else
                     {
-                        // init next target
-                        currGame.currTargetIndex++;
-                        currGame.targetAppears = false;
-                        currGame.currTargetSecCounter = 0;
+                        currGame.score -= 5000;
+                        lblScore.Content = currGame.score;
                         RemoveTarget();
 
                         // init next target
@@ -291,14 +302,20 @@ namespace PewPew
 
                     if (playerHit(new Point(crosshairX, crosshairY)))
                     {
-                        playExplosion();
+                        
+                        currGame.score += 5000;
+                        lblScore.Content = currGame.score;
 
                         if (currGame.numOfLives == 1)
                         {
+                            RemoveTarget();
+                            currGame.gameOver = true;
                             playWinSequence();
                         }
                         if (currGame.numOfLives == 2)
                         {
+                            playExplosion();
+
                             // remove crosshair
                             PlayCanvas.Children.Remove(currGame.currHit);
 
@@ -311,6 +328,8 @@ namespace PewPew
                         }
                         if (currGame.numOfLives == 3)
                         {
+                            playExplosion();
+
                             // remove crosshair
                             PlayCanvas.Children.Remove(currGame.currHit);
 
@@ -343,18 +362,35 @@ namespace PewPew
 
         private void playWinSequence()
         {
+
             VideoControl.Stop();
+            ImageBrush background = new ImageBrush();
+            ////spaceship.SetValue(Canvas.ZIndexProperty, 100000000);
+            background.ImageSource = new BitmapImage(new Uri(@"../../images/Victory.png", UriKind.Relative));
+            VideoControl.Visibility = Visibility.Hidden;
+            HealthBarImage.Visibility = Visibility.Hidden;
+            background.Stretch = Stretch.Fill;
+            
+            //PlayCanvas.Background = background;//System.Windows.Media.Brushes.Black;
+            this.Background = background;
+            winningSoundPlayer.Play();
             // and end game
             //throw new NotImplementedException();
         }
 
         private void playExplosion()
         {
-            // throw new NotImplementedException();
+            
+            soundPlayer.Play();
+            soundPlayer.Position = new TimeSpan(0, 0, 0);
         }
 
         private bool playerHit(Point player)
         {
+            if (currGame.gameOver)
+            {
+                return false;
+            }
             bool positioHit = false;
 
             Point car = currGame.car;
