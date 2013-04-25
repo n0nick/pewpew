@@ -19,7 +19,7 @@ using System.Threading;
 using System.IO;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-
+using WpfAnimatedControl;
 
 namespace PewPew
 {
@@ -53,7 +53,8 @@ namespace PewPew
         private ColorImageFormat colorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
 
         private BitmapImage crosshairBitmap = new BitmapImage(new Uri((@"../../images/crosshair.png"), UriKind.Relative));
-        private BitmapImage explosionBitmap = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
+
+        private AnimatedImage explosionGif = new AnimatedImage() { Source = AnimatedImage.CreateBitmapSourceFromBitmap(new System.Drawing.Bitmap(@"../../images/anim_explode.gif")) };
 
         public MainWindow()
         {
@@ -128,8 +129,7 @@ namespace PewPew
         }
 
         private void initGame()
-        {
-            
+        {            
             VideoControl.Play();
             VideoControl.Volume = 0.1;
 
@@ -228,9 +228,11 @@ namespace PewPew
 
                 if (currGame.explosion)
                 {
-                    PlayCanvas.Children.Remove(currGame.crosshair);
-                    currGame.crosshair.Source = this.crosshairBitmap;
+                    //currGame.crosshair.Source = this.crosshairBitmap;
                     currGame.explosion = false;
+                    
+                    explosionGif.StopAnimate();
+                    PlayCanvas.Children.Remove(explosionGif);
                 }
 
                 if (currGame.targetAppears)
@@ -365,7 +367,17 @@ namespace PewPew
 
         private void playExplosion()
         {
-            currGame.crosshair.Source = this.explosionBitmap;
+            //currGame.crosshair.Source = this.explosionBitmap;
+            currGame.crosshair.Visibility = System.Windows.Visibility.Hidden;
+
+            explosionGif.LoadSmile(new System.Drawing.Bitmap(@"../../images/anim_explode.gif"));
+            explosionGif.Visibility = System.Windows.Visibility.Visible;
+            explosionGif.IsEnabled = true;
+            explosionGif.StartAnimate();
+            explosionGif.Margin = currGame.crosshair.Margin;
+
+            PlayCanvas.Children.Add(explosionGif);
+
             currGame.explosion = true;
             
             soundPlayer.Play();

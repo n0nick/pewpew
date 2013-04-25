@@ -37,6 +37,7 @@
     <Reference Include="Microsoft.Kinect, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AnimatedGif\ParseGif.cs" />
+    <Compile Include="AnimatedGif\WpfAnimatedControl.cs" />
     <Compile Include="Game\ControllerDirection.cs" />
     <Compile Include="Game\MyGame.cs" />
     <Compile Include="Game\Player.cs" />
