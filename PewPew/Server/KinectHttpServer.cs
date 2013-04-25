@@ -47,6 +47,12 @@ namespace PewPew.Game
             if (data != null)
             {
                 this.player.UpdateWeapon(data.weapons);
+
+                if (this.player._contollerDirection == null)
+                {
+                    this.player._contollerDirection = new ControllerDirection();
+                }
+
                 this.player._contollerDirection.xy = data.xy;
                 this.player._contollerDirection.xz = data.xz;
                 this.player._contollerDirection.yz = data.yz;
