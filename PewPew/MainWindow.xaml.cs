@@ -38,9 +38,10 @@ namespace PewPew
         private const float RenderWidth = 640.0f;
         private const float RenderHeight = 480.0f;
         private const double JointThickness = 3;
+        private const double PlayerThickness = 8;
         private const double BodyCenterThickness = 10;
         private const double ClipBoundsThickness = 10;
-        private readonly Brush playerPointBrush = Brushes.HotPink;
+        private readonly Brush playerPointBrush = Brushes.Violet;
         private readonly Brush centerPointBrush = Brushes.Blue;
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
         private readonly Brush inferredJointBrush = Brushes.Yellow;
@@ -367,7 +368,7 @@ namespace PewPew
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
 
-                            //this.updatePlayerPosition(skel); // debug stuff
+                            this.updatePlayerPosition(skel); // debug stuff
                             this.RenderPlayerHands(dc);
                             this.DrawBonesAndJoints(skel, dc);
                             break; // moualem
@@ -381,7 +382,7 @@ namespace PewPew
 
         private void DisplaySkeletonPoint(SkeletonPoint sp)
         {
-            lblQrPoints.Content = sp.X + " " + sp.Y + " " + sp.Z;
+            //lblQrPoints.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblQrText.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblScore.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblStatusBar.Content = sp.X + " " + sp.Y + " " + sp.Z;
@@ -411,9 +412,9 @@ namespace PewPew
 
         private void RenderPlayerHands(DrawingContext dc)
         {
-            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.leftHand), JointThickness, JointThickness);
-            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.rightHand), JointThickness, JointThickness);
-            dc.DrawEllipse(this.playerPointBrush, null, this.SkeletonPointToScreen(currGame.player.center), JointThickness, JointThickness);
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.leftHand), PlayerThickness, PlayerThickness);
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.rightHand), PlayerThickness, PlayerThickness);
+            dc.DrawEllipse(this.playerPointBrush, null, this.SkeletonPointToScreen(currGame.player.center), PlayerThickness, PlayerThickness);
 
             DisplaySkeletonPoint(currGame.player.center);
         }
