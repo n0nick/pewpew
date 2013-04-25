@@ -21,7 +21,7 @@ namespace PewPew.Game
             { TargetName.Action1, new TargetType { inputText = "ice,water,wind", color = System.Windows.Media.Brushes.ForestGreen, fileName = "comb1.png" } },
             { TargetName.Action2, new TargetType { inputText = "fire,magic,stone", color = System.Windows.Media.Brushes.Yellow, fileName = "comb2.png"  } },
             { TargetName.Action3, new TargetType { inputText = "ice,magic,wind", color = System.Windows.Media.Brushes.Purple, fileName = "comb3.png"  } },
-            { TargetName.Action4, new TargetType { inputText = "ice,fire,wind", color = System.Windows.Media.Brushes.Teal, fileName = "comb4.png" } }
+            { TargetName.Action4, new TargetType { inputText = "fire,ice,wind", color = System.Windows.Media.Brushes.Teal, fileName = "comb4.png" } }
         };
 
         public static TargetType EnemyTypeByInputText(String inputText)
