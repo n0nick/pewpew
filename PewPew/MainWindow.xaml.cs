@@ -389,7 +389,7 @@ namespace PewPew
                 positioHit = true;
             }
 
-            bool weaponHit = currGame.player.weapon != null && currGame.player.weapon.Equals(currGame.currTarget);
+            bool weaponHit = (currGame.player.weapon != null) && (currGame.player.weapon.inputText == currGame.currTarget.inputText);
 
             return (positioHit && weaponHit);
         }
