@@ -29,8 +29,8 @@ namespace PewPew
         private Thread _listenThread;
 
         private KinectSensor sensor;
-
-        private Player player;
+        private MyGame currGame;
+        
 
         // skeleton
         private DrawingGroup drawingGroup;
@@ -80,14 +80,12 @@ namespace PewPew
 
         private void StartListening()
         {
-            _server = new KinectHttpServer(KinectHttpServer.SERVER_PORT) { player = this.player };
+            _server = new KinectHttpServer(KinectHttpServer.SERVER_PORT) { player = currGame.player };
             _server.listen();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.player = new Player();
-
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
                 if (potentialSensor.Status == KinectStatus.Connected)
@@ -127,11 +125,19 @@ namespace PewPew
 
         private void initGame()
         {
+            currGame = new MyGame();
+
+            // init targets
+            TimeSpan[] targetTriggers = new TimeSpan[3];
+            targetTriggers[0] = new TimeSpan(0, 0, 10);
+            targetTriggers[1] = new TimeSpan(0, 0, 23);
+            targetTriggers[2] = new TimeSpan(0, 0, 40);
+
             // Server Start
             _listenThread = new Thread(new ThreadStart(StartListening));
             _listenThread.Start();
 
-            MyGame currGame = new MyGame();
+            
 
             // clip video to show top bar
             VideoControl.Clip = new RectangleGeometry(new Rect(new System.Windows.Point(0, 420), new System.Windows.Point(2820, 1580)));
@@ -158,7 +164,8 @@ namespace PewPew
             {
                 TimeSpan checkTime = VideoControl.Position;
 
-                if ((checkTime.Seconds % 15) == 0 && (checkTime.Seconds != 0))
+                if (!currGame.targetAppears && (currGame.currTargetIndex < targetTriggers.Length) && (checkTime.Seconds == targetTriggers[currGame.currTargetIndex].Seconds))
+                //if (!currGame.targetAppears &&  (checkTime.Seconds % 5 == 0)) 
                 {
                     int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
                     lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
@@ -170,15 +177,21 @@ namespace PewPew
                     myStoryboard.Begin(this);
                 }
 
-                if ((currGame.currTargetSecCounter < 9) && currGame.targetAppears)
+                if (currGame.targetAppears)
                 {
-                    currGame.currTargetSecCounter++;
-                }
-                else
-                {
-                    PlayCanvas.Children.Remove(comb);
-                    currGame.targetAppears = false;
-                    currGame.currTargetSecCounter = 0;
+                    if (currGame.currTargetSecCounter < 9)
+                    {
+                        currGame.currTargetSecCounter++;
+                    }
+                    else
+                    {
+                        PlayCanvas.Children.Remove(comb);
+
+                        // init next target
+                        currGame.currTargetIndex++;
+                        currGame.targetAppears = false;
+                        currGame.currTargetSecCounter = 0;
+                    }
                 }
 
             }, this.Dispatcher);
@@ -210,9 +223,24 @@ namespace PewPew
             {
                 if (currGame.targetAppears)
                 {
-                    checkForHit(this.player.center.X, this.player.center.Y, null, currGame.currTarget);
-                }
+                    Point relativePoint = VideoControl.TransformToAncestor(this).Transform(new Point(0, 0));
+                    Point playerHitPoint = new Point(currGame.player.center.X, currGame.player.center.Y);
+                    if (checkForHit(playerHitPoint, relativePoint))
+                    {
+                        playExplosion();
 
+                        if (currGame.numOfLives == 1)
+                        {
+                            playWinSequence();
+                        }
+                        else
+                        {
+                            // update health bar
+                            currGame.numOfLives--;
+                        }
+
+                    }
+                }
 
             }, this.Dispatcher);
 
@@ -220,16 +248,31 @@ namespace PewPew
  
         }
 
-        private void checkForHit(float p1, float p2, TargetType targetType, TargetType currTarget)
+        private void playWinSequence()
         {
-            if (targetType.Equals(currTarget) && isAccurateHit(p1,p2))
-            {
-            } 
+            // and end game
+            throw new NotImplementedException();
         }
 
-        private bool isAccurateHit(float p1, float p2)
+        private void playExplosion()
         {
             throw new NotImplementedException();
+        }
+
+        private bool checkForHit(Point playerHitPoint, Point relativePoint)
+        {
+            if (currGame.player.weapon == null)
+            {
+                return false;
+            }
+
+            bool isAccurateHit = false;
+
+            if (currGame.player.weapon.Equals(currGame.currTarget) && isAccurateHit)
+            {
+                return true;
+            }
+            return false;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -294,14 +337,14 @@ namespace PewPew
 
         private void updatePlayerPosition(Skeleton skeleton)
         {
-            this.player.UpdateHands(skeleton);
+            currGame.player.UpdateHands(skeleton);
         }
 
         private void RenderPlayerHands(DrawingContext dc)
         {
-            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.leftHand), JointThickness, JointThickness);
-            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.rightHand), JointThickness, JointThickness);
-            dc.DrawEllipse(this.centerPointBrush, null, this.SkeletonPointToScreen(this.player.center), JointThickness, JointThickness);
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.leftHand), JointThickness, JointThickness);
+            dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(currGame.player.rightHand), JointThickness, JointThickness);
+            dc.DrawEllipse(this.centerPointBrush, null, this.SkeletonPointToScreen(currGame.player.center), JointThickness, JointThickness);
         }
 
         private void DrawBonesAndJoints(Skeleton skeleton, DrawingContext drawingContext)
