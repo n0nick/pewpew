@@ -129,9 +129,7 @@ namespace PewPew
             VideoControl.Play();
             currGame = new MyGame();
 
-            Image healthBar = new Image();
-            healthBar.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
-            healthBarCanvas.Children.Add(healthBar);
+            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/3livesleft.png"), UriKind.Relative));
 
             // init targets
             TimeSpan[] targetTriggers = new TimeSpan[9];
@@ -307,7 +305,7 @@ namespace PewPew
                             PlayCanvas.Children.Remove(currGame.currHit);
 
                             // update health bar
-                            healthBar.Source = new BitmapImage(new Uri((@"../../images/1livesleft.png"), UriKind.Relative));
+                            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/1livesleft.png"), UriKind.Relative));
                             currGame.numOfLives--;
 
                             RemoveTarget();
@@ -319,7 +317,7 @@ namespace PewPew
                             PlayCanvas.Children.Remove(currGame.currHit);
 
                             // update health bar
-                            healthBar.Source = new BitmapImage(new Uri((@"../../images/2livesleft.png"), UriKind.Relative));
+                            this.HealthBarImage.Source = new BitmapImage(new Uri((@"../../images/2livesleft.png"), UriKind.Relative));
                             currGame.numOfLives--;
                             currGame.targetAppears = false;
 

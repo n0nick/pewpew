@@ -27,6 +27,7 @@
         <Image Name="SkeletonImage" Width="320" Height="240"  Canvas.ZIndex="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2" />
         
         <Image Name="CombinationImage" Width="380" Height="75" Canvas.ZIndex="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Visibility="Hidden"/> 
+        <Image Name="HealthBarImage" Width="264" Height="81" Canvas.ZIndex="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,330,0" Grid.RowSpan="2" />
 
         <Canvas x:Name="PlayCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="403,31,27,511" Grid.RowSpan="2"  Canvas.ZIndex="9" />
 
