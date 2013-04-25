@@ -392,16 +392,12 @@ namespace PewPew
                         this._server.is_active = false;
                         this._server.listener.Stop();
                     }
-                    catch (Exception ex)
-                    {
-                    }
+                    catch { }
                     this._listenThread.Abort();
                     this._listenThread = null;
                 }
             }
-            catch (Exception ex)
-            {
-            }
+            catch { }
         }
 
         private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
