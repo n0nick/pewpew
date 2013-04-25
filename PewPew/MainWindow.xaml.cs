@@ -134,11 +134,17 @@ namespace PewPew
             healthBarCanvas.Children.Add(healthBar);
 
             // init targets
-            TimeSpan[] targetTriggers = new TimeSpan[3];
+            TimeSpan[] targetTriggers = new TimeSpan[9];
             //targetTriggers[0] = new TimeSpan(0, 0, 10);
-            targetTriggers[0] = new TimeSpan(0, 0, 3);
-            targetTriggers[1] = new TimeSpan(0, 0, 23);
-            targetTriggers[2] = new TimeSpan(0, 0, 40);
+            targetTriggers[0] = new TimeSpan(0, 0, 5);
+            targetTriggers[1] = new TimeSpan(0, 0, 17);
+            targetTriggers[2] = new TimeSpan(0, 0, 29);
+            targetTriggers[3] = new TimeSpan(0, 0, 40);
+            targetTriggers[4] = new TimeSpan(0, 0, 52);
+            targetTriggers[5] = new TimeSpan(0, 0, 64);
+            targetTriggers[6] = new TimeSpan(0, 0, 76);
+            targetTriggers[7] = new TimeSpan(0, 0, 88);
+            targetTriggers[8] = new TimeSpan(0, 0, 100);
 
             // Server Start
             _listenThread = new Thread(new ThreadStart(StartListening));
@@ -211,7 +217,7 @@ namespace PewPew
 
                         // init next target
                         currGame.currTargetIndex++;
-                        //currGame.targetAppears = false;
+                        currGame.targetAppears = false;
                         currGame.currTargetSecCounter = 0;
                     }
                 }
@@ -238,13 +244,14 @@ namespace PewPew
                     }
                 }
 
+                // update car position
+                currGame.car.X = currGame.pixelCount / 2 + 1000;
+
             }, this.Dispatcher);
 
             // handle target hits
             DispatcherTimer hitHandler = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Normal, delegate
             {
-                Point relativePoint = VideoControl.TransformToAncestor(this).Transform(new Point(0, 0));
-                //lblQrText.Content = "x is: " + relativePoint.X + ", y is: " + relativePoint.Y;
                 if (currGame.targetAppears)
                 {
                     // generate new hitpoint
@@ -283,8 +290,7 @@ namespace PewPew
                     PlayCanvas.Children.Add(ellipse);
                     currGame.currHit = ellipse; 
 
-                    Point playerHitPoint = new Point(x, y);
-                    if (checkForHit(playerHitPoint, relativePoint))
+                    if (playerHit(new Point(x, y)))
                     {
                         playExplosion();
 
@@ -314,28 +320,26 @@ namespace PewPew
 
         private void playExplosion()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
-        private bool checkForHit(Point playerHitPoint, Point relativePoint)
+        private bool playerHit(Point player)
         {
-            if (currGame.player.weapon == null)
-            {
-                return false;
-            }
+            bool positioHit = false;
 
-            bool isAccurateHit = false;
-            if (((relativePoint.X - playerHitPoint.X) <= 300) && ((relativePoint.Y - playerHitPoint.Y <= 300)))
+            Point car = currGame.car;
+
+            if ((player.X > (car.X - currGame.CAR_RADIUS)) && (player.X < (car.X + currGame.CAR_RADIUS)) &&
+                (player.Y > (car.Y + currGame.CAR_RADIUS)))
             {
                 lblScore.Content = "Hit";
-                isAccurateHit = true;
+                positioHit = true;
             }
 
-            if (currGame.player.weapon.Equals(currGame.currTarget) && isAccurateHit)
-            {
-                return true;
-            }
-            return false;
+            // bool weaponHit = currGame.player.weapon != null && currGame.player.weapon.Equals(currGame.currTarget);
+            bool weaponHit = true;
+
+            return positioHit && weaponHit;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -386,14 +390,13 @@ namespace PewPew
 
         private void DisplaySkeletonPoint(SkeletonPoint sp)
         {
-            /*
+            /* debug stuff
             //lblQrPoints.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblQrText.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblScore.Content = sp.X + " " + sp.Y + " " + sp.Z;
             lblStatusBar.Content = sp.X + " " + sp.Y + " " + sp.Z;
-             */
-
             lblQrText.Content = "delta = " + (currGame.player.leftHand.Z - currGame.player.rightHand.Z);
+             */
         }
 
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
