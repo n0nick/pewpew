@@ -196,15 +196,15 @@ namespace Bend.Util
     {
 
         protected int port;
-        TcpListener listener;
-        bool is_active = true;
+        public TcpListener listener;
+        public bool is_active = true;
 
         public HttpServer(int port)
         {
             this.port = port;
         }
 
-        public void listen()
+        public virtual void listen()
         {
             listener = new TcpListener(IPAddress.Any, port); // moualem changed
             listener.Start();

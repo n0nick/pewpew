@@ -344,9 +344,29 @@ namespace PewPew
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (null != this.sensor)
+            try
             {
-                this.sensor.Stop();
+                if (null != this.sensor)
+                {
+                    this.sensor.Stop();
+                }
+
+                if ((this._listenThread != null) && (this._listenThread.IsAlive))
+                {
+                    try
+                    {
+                        this._server.is_active = false;
+                        this._server.listener.Stop();
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    this._listenThread.Abort();
+                    this._listenThread = null;
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
 

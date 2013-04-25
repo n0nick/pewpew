@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -53,6 +56,21 @@ namespace PewPew.Game
                 this.player.UpdateWeapon(String.Empty);
             }
         }
+
+        public override void listen()
+        {
+            base.listener = new TcpListener(IPAddress.Any, port); // moualem changed
+            listener.Start();
+            while (is_active)
+            {
+                TcpClient s = listener.AcceptTcpClient();
+                HttpProcessor processor = new HttpProcessor(s, this);
+                Thread thread = new Thread(new ThreadStart(processor.process));
+                thread.Start();
+                Thread.Sleep(1);
+            }
+        }
+
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
         {
