@@ -370,6 +370,8 @@ namespace PewPew
             VideoControl.Visibility = Visibility.Hidden;
             HealthBarImage.Visibility = Visibility.Hidden;
             background.Stretch = Stretch.Fill;
+
+            PlayCanvas.Children.Remove(currGame.crosshair);
             
             //PlayCanvas.Background = background;//System.Windows.Media.Brushes.Black;
             this.Background = background;
