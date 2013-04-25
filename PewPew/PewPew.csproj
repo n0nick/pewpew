@@ -126,7 +126,7 @@
     <Resource Include="Explosion.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Explosion.png" />
+    <Resource Include="images\anim_explode.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
