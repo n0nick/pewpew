@@ -58,9 +58,16 @@
     <Compile Include="Game\MyGame.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Target.cs" />
+    <Compile Include="KinectWindow.xaml.cs">
+      <DependentUpon>KinectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Server\SimpleHttpServer.cs" />
     <Compile Include="Server\Communicator.cs" />
     <Compile Include="Server\KinectHttpServer.cs" />
+    <Page Include="KinectWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

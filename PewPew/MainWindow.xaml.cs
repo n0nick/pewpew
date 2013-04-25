@@ -40,6 +40,7 @@ namespace PewPew
         private const double JointThickness = 3;
         private const double BodyCenterThickness = 10;
         private const double ClipBoundsThickness = 10;
+        private readonly Brush playerPointBrush = Brushes.HotPink;
         private readonly Brush centerPointBrush = Brushes.Blue;
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
         private readonly Brush inferredJointBrush = Brushes.Yellow;
@@ -255,6 +256,8 @@ namespace PewPew
 
             using (DrawingContext dc = this.drawingGroup.Open())
             {
+                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+
                 if (skeletons.Length != 0)
                 {
                     foreach (Skeleton skel in skeletons)
@@ -301,7 +304,7 @@ namespace PewPew
         {
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.leftHand), JointThickness, JointThickness);
             dc.DrawEllipse(this.inferredJointBrush, null, this.SkeletonPointToScreen(this.player.rightHand), JointThickness, JointThickness);
-            dc.DrawEllipse(this.centerPointBrush, null, this.SkeletonPointToScreen(this.player.center), JointThickness, JointThickness);
+            dc.DrawEllipse(this.playerPointBrush, null, this.SkeletonPointToScreen(this.player.center), JointThickness, JointThickness);
         }
 
         private void DrawBonesAndJoints(Skeleton skeleton, DrawingContext drawingContext)
