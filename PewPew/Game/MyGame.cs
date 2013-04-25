@@ -19,7 +19,7 @@ namespace PewPew.Game
         public int numOfLives = 3;
         public TargetType currTarget = null;
         public Player player;
-        public Ellipse currHit = null;
+        public Image currHit = null;
         public Image currExplosion = null;
 
         public int CAR_RADIUS = 200;

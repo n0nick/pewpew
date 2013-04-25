@@ -181,6 +181,14 @@ namespace PewPew
             //this.RegisterName("explode", explosion);
             //Storyboard.SetTargetName(explosionFader, "explode");
 
+            // generate new hitpoint
+            Image crosshair = new Image()
+            {
+                Width = 128,
+                Height = 128,
+                Source = new BitmapImage(new Uri((@"../../images/crosshair.png"), UriKind.Relative))
+            };
+            
             // random enemy helper
             Random randCombination = new Random();
 
@@ -255,25 +263,14 @@ namespace PewPew
             {
                 if (currGame.targetAppears)
                 {
-                    // generate new hitpoint
-                    Ellipse ellipse = new Ellipse();
-
-                    ellipse.Stroke = System.Windows.Media.Brushes.Red;
-                    ellipse.Fill = System.Windows.Media.Brushes.Red;
-                    ellipse.HorizontalAlignment = HorizontalAlignment.Center;
-                    ellipse.VerticalAlignment = VerticalAlignment.Center;
-
-                    ellipse.Width = (int)(2 * 0.1 * 400);
-                    ellipse.Height = (int)(2 * 0.1 * 400);
-
                     Point calibratedCenter = this.SkeletonPointToScreen(currGame.player.center);
 
-                    double x = ((int)calibratedCenter.X * (int)this.ActualWidth) / this.sensor.ColorStream.FrameWidth - 300;
-                    double y = ((int)calibratedCenter.Y * (int)this.ActualHeight) / this.sensor.ColorStream.FrameHeight;
+                    double crosshairX = ((int)calibratedCenter.X * (int)this.ActualWidth) / this.sensor.ColorStream.FrameWidth - 300;
+                    double crosshairY = ((int)calibratedCenter.Y * (int)this.ActualHeight) / this.sensor.ColorStream.FrameHeight;
 
-                    double left = x - (ellipse.Width / 2);
-                    double top = y - (ellipse.Height / 2);
-                    ellipse.Margin = new Thickness(left, top, 0, 0);
+                    double crosshairLeft = crosshairX - (crosshair.Width / 2);
+                    double crosshairTop = crosshairY - (crosshair.Height / 2);
+                    crosshair.Margin = new Thickness(crosshairLeft, crosshairTop, 0, 0);
 
                     if (currGame.currExplosion != null)
                     {
@@ -288,10 +285,11 @@ namespace PewPew
                     PlayCanvas.Children.Add(explosion);
                     //Helper.MoveTo(explosion, x, y);
                     currGame.currExplosion = explosion;
-                    PlayCanvas.Children.Add(ellipse);
-                    currGame.currHit = ellipse; 
+                    PlayCanvas.Children.Add(crosshair);
+                    //Panel.SetZIndex(crosshair, 12);
+                    currGame.currHit = crosshair; 
 
-                    if (playerHit(new Point(x, y)))
+                    if (playerHit(new Point(crosshairX, crosshairY)))
                     {
                         playExplosion();
 
