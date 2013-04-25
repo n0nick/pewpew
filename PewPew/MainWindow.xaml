@@ -39,6 +39,7 @@
         <DockPanel Grid.Row="2" Margin="0" >
             <Label x:Name="lblStatusBar" Content="Ready." HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Width="342" />
         </DockPanel>
+        <Canvas x:Name="healthBarCanvas" HorizontalAlignment="Left" Height="54" Margin="447,0,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

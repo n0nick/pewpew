@@ -129,6 +129,10 @@ namespace PewPew
         {
             currGame = new MyGame();
 
+            Image healthBar = new Image();
+            healthBar.Source = new BitmapImage(new Uri((@"../../images/comb2.png"), UriKind.Relative));
+            healthBarCanvas.Children.Add(healthBar);
+
             // init targets
             TimeSpan[] targetTriggers = new TimeSpan[3];
             //targetTriggers[0] = new TimeSpan(0, 0, 10);
