@@ -24,5 +24,9 @@ namespace PewPew.Game
             { TargetName.Action4, new TargetType { inputText = "fire,wind,ice", color = System.Windows.Media.Brushes.Teal, fileName = "comb4.png" } }
         };
 
+        public static TargetType EnemyTypeByInputText(String inputText)
+        {
+            return EnemyTypes.FirstOrDefault(type => type.Value.inputText == inputText).Value;
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace PewPew.Game
         public SkeletonPoint rightHand;
         public SkeletonPoint center;
 
+        public TargetType weapon;
+
         private Point screenPoint;
 
         public void UpdateHands(Skeleton skeleton)
@@ -26,6 +28,16 @@ namespace PewPew.Game
                 Y = (this.leftHand.Y + this.rightHand.Y) / 2,
                 Z = (this.leftHand.Z + this.rightHand.Z) / 2
             };
+        }
+
+        public void UpdateWeapon(TargetType weapon)
+        {
+            this.weapon = weapon;
+        }
+
+        public void UpdateWeapon(String inputText)
+        {
+            this.UpdateWeapon(Target.EnemyTypeByInputText(inputText));
         }
     }
 }

@@ -80,7 +80,7 @@ namespace PewPew
 
         private void StartListening()
         {
-            _server = new KinectHttpServer(KinectHttpServer.SERVER_PORT);
+            _server = new KinectHttpServer(KinectHttpServer.SERVER_PORT) { player = this.player };
             _server.listen();
         }
 

@@ -12,16 +12,12 @@ namespace PewPew.Game
     public class KinectHttpServer : HttpServer
     {
         public const int SERVER_PORT = 8080;
-        private static string _currentWeapons = string.Empty;
+
+        public Player player;
 
         public KinectHttpServer(int port)
             : base(port)
         {
-        }
-
-        public static string GetLastUsedWeapons()
-        {
-            return _currentWeapons;
         }
 
         public override void handleGETRequest(HttpProcessor p)
@@ -30,7 +26,7 @@ namespace PewPew.Game
             p.writeSuccess();
 
             string callback = String.Empty;
-            _currentWeapons = ParseParameters(p.http_url, out callback);
+            this.setCurrentWeapons(ParseParameters(p.http_url, out callback));
 
             try
             {
@@ -40,6 +36,11 @@ namespace PewPew.Game
             {
                 Console.WriteLine("Exception: {0}", ex.Message);
             }
+        }
+
+        private void setCurrentWeapons(string weaponsStr)
+        {
+            this.player.UpdateWeapon(weaponsStr);
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
