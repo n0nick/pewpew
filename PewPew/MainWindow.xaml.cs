@@ -161,7 +161,7 @@ namespace PewPew
 
             //// init explosion image & blinking action
             Image explosion = new Image();
-            explosion.Source = new BitmapImage(new Uri((@"../../images/Explosion.png"), UriKind.Relative));
+            explosion.Source = new BitmapImage(new Uri((@"../../images/anim_explode.gif"), UriKind.Relative));
             //DoubleAnimation explosionFader = new DoubleAnimation();
             //explosionFader.From = 0.0;
             //explosionFader.To = 1.0;
