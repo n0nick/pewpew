@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace PewPew.Game
 {
-    class Player
+    public class Player
     {
         public SkeletonPoint leftHand;
         public SkeletonPoint rightHand;
