@@ -307,7 +307,7 @@ namespace PewPew
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
 
-                            this.updatePlayerPosition(skel);
+                            //this.updatePlayerPosition(skel); // debug stuff
                             this.RenderPlayerHands(dc);
                             this.DrawBonesAndJoints(skel, dc);
                             break; // moualem
