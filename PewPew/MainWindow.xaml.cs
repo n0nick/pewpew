@@ -102,14 +102,14 @@ namespace PewPew
                 this.sensor.ColorStream.Enable(this.colorImageFormat);
                 this.colorPixels = new byte[this.sensor.ColorStream.FramePixelDataLength];
                 this.colorImgSource = new WriteableBitmap(this.sensor.ColorStream.FrameWidth, this.sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
-                //this.ColorImage.Source = this.colorImgSource;
+                this.ColorImage.Source = this.colorImgSource;
                 this.sensor.ColorFrameReady += this.SensorColorFrameReady;
 
                 this.sensor.SkeletonStream.Enable();
                 this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
                 this.drawingGroup = new DrawingGroup();
                 this.skeletonImgSource = new DrawingImage(this.drawingGroup);
-                //this.SkeletonImage.Source = this.skeletonImgSource;
+                this.SkeletonImage.Source = this.skeletonImgSource;
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
 
                 try
@@ -152,8 +152,6 @@ namespace PewPew
 
             // random enemy helper
             Random randCombination = new Random();
-
-            Panel.SetZIndex(PlayCanvas, 10000);
 
             // summon a target
             DispatcherTimer targetSummoner = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Normal, delegate
@@ -217,8 +215,6 @@ namespace PewPew
             {
                 this.sensor.Stop();
             }
-
-            
         }
 
         private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
