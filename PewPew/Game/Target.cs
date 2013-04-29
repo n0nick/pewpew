@@ -23,6 +23,11 @@ namespace PewPew.Game
             { TargetName.Action3, new TargetType { inputText = "ice,magic,wind", color = System.Windows.Media.Brushes.Purple, fileName = "comb3.png"  } },
             { TargetName.Action4, new TargetType { inputText = "fire,ice,wind", color = System.Windows.Media.Brushes.Teal, fileName = "comb4.png" } }
         };
+        //public enum TargetName { Action1 };
+        //public static Dictionary<TargetName, TargetType> EnemyTypes = new Dictionary<TargetName, TargetType>()
+        //{ 
+        //    { TargetName.Action1, new TargetType { inputText = "ice,water,wind", color = System.Windows.Media.Brushes.ForestGreen, fileName = "comb1.png" } },
+        //};
 
         public static TargetType EnemyTypeByInputText(String inputText)
         {

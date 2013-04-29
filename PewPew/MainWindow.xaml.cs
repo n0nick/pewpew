@@ -203,8 +203,9 @@ namespace PewPew
                 if (!currGame.targetAppears && (currGame.currTargetIndex < targetTriggers.Length) && (checkTime.Seconds == targetTriggers[currGame.currTargetIndex].Seconds))
                 {
                     //lblQrText.Content = currGame.currTargetIndex;
-                    int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length);
+                    int currCombination = randCombination.Next(0, Enum.GetNames(typeof(Target.TargetName)).Length - 1);
                     //lblQrText.Content = Target.EnemyTypes[(Target.TargetName)currCombination].inputText; // make random
+                    //int currCombination = 0;
                     currGame.currTarget = Target.EnemyTypes[(Target.TargetName)currCombination];
                     this.CombinationImage.Source = new BitmapImage(new Uri(@"../../images/" + Target.EnemyTypes[(Target.TargetName)currCombination].fileName, UriKind.Relative));
                     this.CombinationImage.Visibility = System.Windows.Visibility.Visible;
