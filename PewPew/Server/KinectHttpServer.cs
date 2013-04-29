@@ -106,11 +106,11 @@ namespace PewPew.Game
                     callback = parameters["callback"];
                     data.weapons = parameters["w"];
 
-                    if(parameters["xy"] != null)
+                    if(parameters["xy"] != null && parameters["xy"] != String.Empty)
                         data.xy = double.Parse(parameters["xy"]);
-                    if (parameters["xz"] != null)
+                    if (parameters["xz"] != null && parameters["xz"] != String.Empty)
                         data.xy = double.Parse(parameters["xz"]);
-                    if (parameters["yz"] != null)
+                    if (parameters["yz"] != null && parameters["yz"] != String.Empty)
                         data.xy = double.Parse(parameters["yz"]);
                 }
             }
